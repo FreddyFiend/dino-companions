@@ -8,6 +8,7 @@ import Homepage from "./pages/Homepage";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import SignUp from "./pages/SignUp";
 import Product from "./pages/Product";
 
@@ -30,6 +31,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <ReactQueryDevtools />
         </QueryClientProvider>
       </UserProvider>
     </BrowserRouter>

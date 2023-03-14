@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import home from "../assets/home.png";
-import SecondaryButton from "./SecondaryButton";
-import PrimaryButton from "./PrimaryButton";
 const Hero: React.FC = () => {
   return (
     <div className="max-h-screen">
@@ -14,8 +12,6 @@ const Hero: React.FC = () => {
             We have got the best products for your castle to show your kingdom
             what it’s like to be a King.
           </div>
-          <PrimaryButton />
-          <SecondaryButton />
         </div>
         <div className="offer-section p-4 m-4  rounded-xl">
           <img src={home} alt="" className="relative h-full " />
