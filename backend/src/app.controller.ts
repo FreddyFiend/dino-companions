@@ -1,11 +1,13 @@
 import {
   Controller,
   Request,
+  Res,
   Get,
   Post,
   UseGuards,
   Logger,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
@@ -21,13 +23,17 @@ export class AppController {
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Request() req, @Res({ passthrough: true }) res: Response) {
+    const { access_token } = await this.authService.login(req.user, res);
+
+    console.log(req.cookies);
+    return { msg: 'success', access_token };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
+  @UseGuards(JwtAuthGuard)
   getProfile(@Request() req) {
+    console.log('get profile');
     return req.user;
   }
 
