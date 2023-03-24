@@ -6,7 +6,6 @@ import FormInput from "../components/FormInput";
 import { useMutation } from "@tanstack/react-query";
 import { api, loginUserFn } from "../routes/usersApi";
 import { UserContext } from "../providers/UserProvider";
-import Cookies from "js-cookie";
 
 const LoginSchema = z.object({
   email: z
@@ -20,10 +19,12 @@ const LoginSchema = z.object({
 export type LoginInput = z.TypeOf<typeof LoginSchema>;
 
 const Login = () => {
-  const userContext = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
   const getProfile = () => {
-    api.get("/profile", { withCredentials: true }).then((res) => {
+    api.get("auth/profile", { withCredentials: true }).then((res) => {
       console.log(res.data);
+      setUser(res.data);
+
       console.log("Get Profile Clicked");
     });
   };
@@ -86,6 +87,8 @@ const Login = () => {
           <input type="submit" className="p-btn" />
         </form>
       </FormProvider>
+      <div>{user}</div>
+
       <button className="p-btn" onClick={getProfile}>
         Get User Info
       </button>

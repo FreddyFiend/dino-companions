@@ -16,17 +16,17 @@ import { User as UserModel } from '@prisma/client';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Post()
+  /*  @Post()
   async create(@Body() userData: CreateUserDto): Promise<UserModel> {
     return this.userService.createUser(userData);
-  }
+  } */
   @Get()
   findAll() {
     return this.userService.findAll({});
-  }
+  } /* 
 
   @Patch()
   async update(@Body() userData: UpdateUserDto): Promise<UserModel> {
     return this.userService.createUser(userData);
-  }
+  } */
 }

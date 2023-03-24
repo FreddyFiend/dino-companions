@@ -15,6 +15,7 @@ model User {
   email String  @unique
   password String 
   name  String?
+  hashedRt  String?
   products Product[]
 }
 
