@@ -4,6 +4,7 @@ import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import { UserProvider } from "./providers/UserProvider";
+import { ToastContainer } from "react-toastify";
 import Homepage from "./pages/Homepage";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
@@ -11,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import SignUp from "./pages/SignUp";
 import Product from "./pages/Product";
+import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
+
+          <ToastContainer />
           <ReactQueryDevtools />
         </QueryClientProvider>
       </UserProvider>

@@ -20,7 +20,9 @@ interface UserProviderProps {
 }
 
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
+  //  @ts-ignore
+  let temp = JSON.parse(localStorage.getItem("user")) || null;
+  const [user, setUser] = useState<User | null>(temp);
 
   const userContextValue: UserContextType = {
     user,

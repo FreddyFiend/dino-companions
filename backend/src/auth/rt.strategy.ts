@@ -16,10 +16,9 @@ export class RtStrategy extends PassportStrategy(Strategy, 'rt') {
     });
   }
   async validate(req: RequestType, payload: any) {
-    return { payload };
+    return payload;
   }
   private static extractJWT(req: RequestType): string | null {
-    console.log(req.cookies);
     if (req.cookies && 'refreshToken' in req.cookies) {
       const refreshToken = req.cookies['refreshToken'];
       return refreshToken;

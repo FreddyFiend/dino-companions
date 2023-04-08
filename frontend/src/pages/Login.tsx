@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
-import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useForm, SubmitHandler, FormProvider, set } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import FormInput from "../components/FormInput";
 import { useMutation } from "@tanstack/react-query";
-import { api, loginUserFn } from "../routes/usersApi";
+import { api, apiAuth, loginUserFn } from "../routes/usersApi";
 import { UserContext } from "../providers/UserProvider";
+import { useNavigate } from "react-router-dom";
 
 const LoginSchema = z.object({
   email: z
@@ -19,9 +21,10 @@ const LoginSchema = z.object({
 export type LoginInput = z.TypeOf<typeof LoginSchema>;
 
 const Login = () => {
-  const [user, setUser] = useContext(UserContext);
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
   const getProfile = () => {
-    api.get("auth/profile", { withCredentials: true }).then((res) => {
+    apiAuth.get("auth/profile", { withCredentials: true }).then((res) => {
       console.log(res.data);
       setUser(res.data);
 
@@ -31,30 +34,35 @@ const Login = () => {
   const { mutate: loginUser } = useMutation(
     (userData: LoginInput) => loginUserFn(userData),
     {
-      onMutate(variables) {
+      onMutate() {
         // store.setRequestLoading(true);
       },
       onSuccess: (res) => {
+        toast.success("df");
         console.log(res);
-        //Cookies.set("token", res.access_token, { httpOnly: true, expires: 7 });
+        // navigate("/");
+        setUser(res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         /*  store.setRequestLoading(false);
-        toast.success("You successfully logged in");
+   
         navigate(from); */
       },
       onError: (error: any) => {
+        console.log(error);
+        console.log("faa");
         //store.setRequestLoading(false);
         if (Array.isArray((error as any).response.data.error)) {
-          /* (error as any).response.data.error.forEach((el: any) =>
+          (error as any).response.data.error.forEach((el: any) =>
             toast.error(el.message, {
               position: "top-right",
             })
-          ); */
+          );
           console.log(error);
         } else {
           console.log(error);
-          /* toast.error((error as any).response.data.message, {
+          toast.error((error as any).response.data.message, {
             position: "top-right",
-          }); */
+          });
         }
       },
     }
@@ -69,9 +77,21 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = methods;
+  const logUser = () => {
+    localStorage.removeItem("user");
+  };
+  const signinUser = (values: LoginInput) => {
+    api
+      .post("auth/local/login", values)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log("king"));
+  };
 
   const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
     loginUser(values);
+    //signinUser(values);
   };
 
   return (
@@ -87,7 +107,9 @@ const Login = () => {
           <input type="submit" className="p-btn" />
         </form>
       </FormProvider>
-      <div>{user}</div>
+      <button onClick={logUser}>log user</button>
+      <h3>{user?.id}</h3>
+      <h2>{user?.email}</h2>
 
       <button className="p-btn" onClick={getProfile}>
         Get User Info

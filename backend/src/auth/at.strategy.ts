@@ -18,7 +18,6 @@ export class AtStrategy extends PassportStrategy(Strategy, 'at') {
     });
   }
   async validate(payload: any) {
-    console.log(payload);
     return { sub: payload.sub, email: payload.email };
   }
   private static extractJWT(req: RequestType): string | null {

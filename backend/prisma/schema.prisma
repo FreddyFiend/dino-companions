@@ -11,24 +11,33 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  password String 
-  name  String?
-  hashedRt  String?
+  id       String    @id @default(uuid())
+  email    String    @unique
+  password String
+  name     String?
+  hashedRt String?
   products Product[]
+  roles    Roles[]
 }
 
+model Roles {
+  id     String @id @default(uuid())
+  name   String @default("user")
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([name, userId])
+}
 
 model Product {
-  id        Int      @default(autoincrement()) @id
-  title     String
-  description   String?
-  published Boolean? @default(false)
-  seller    User?    @relation(fields: [sellerId], references: [id])
-  sellerId  Int?
-  quantity Int
-  price Float
-
-
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  published   Boolean? @default(false)
+  seller      User?    @relation(fields: [sellerId], references: [id])
+  sellerId    String?
+  quantity    Int
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

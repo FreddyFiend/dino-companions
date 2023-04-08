@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import Footer from "./layouts/Footer/Footer";
-import Navbar from "./layouts/Navbar/Navbar";
+import Footer from "./layouts/Footer";
+import Navbar from "./layouts/Navbar";
 import {
   UserContext,
   UserContextType,
@@ -8,14 +8,6 @@ import {
 } from "./providers/UserProvider";
 import { Outlet } from "react-router-dom";
 function App() {
-  const { user, setUser } = useContext<UserContextType>(UserContext);
-  useEffect(() => {
-    setUser({ id: 8, name: "sds", email: "sdsd" });
-    console.log(user);
-
-    return () => {};
-  }, []);
-
   return (
     <>
       <header className="w-full">

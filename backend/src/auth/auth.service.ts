@@ -19,6 +19,7 @@ export class AuthService {
   async validateUser(email: string, pass: string) {
     const user = await this.userService.findOne({ email });
     if (user) {
+      console.log(user.password);
       const passwordMatches = await argon.verify(user.password, pass);
       if (passwordMatches) {
         const { password, ...result } = user;
@@ -54,22 +55,21 @@ export class AuthService {
   }
 
   async refreshTokens(
-    userId: number,
+    userId: string,
     rt: string,
     res: Response,
   ): Promise<Tokens> {
-    console.log(rt);
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
       },
     });
     if (!user || !user.hashedRt)
-      throw new ForbiddenException('Access Denied hash dont exists');
+      throw new ForbiddenException("Access Denied hash don't exists");
 
     const rtMatches = await argon.verify(user.hashedRt, rt);
     if (!rtMatches)
-      throw new ForbiddenException('Access Denied hash didnt match');
+      throw new ForbiddenException("Access Denied hash didn't match");
 
     const tokens = await this.getTokens(user.id, user.email);
     await this.setTokensToCookie(
@@ -82,9 +82,8 @@ export class AuthService {
     return tokens;
   }
 
-  async updateRtHash(userId: number, rt: string): Promise<void> {
+  async updateRtHash(userId: string, rt: string): Promise<void> {
     const hash = await argon.hash(rt);
-    console.log(hash);
     await this.prisma.user.update({
       where: {
         id: userId,
@@ -108,7 +107,7 @@ export class AuthService {
     return tokens;
   }
 
-  async getTokens(userId: number, email: string): Promise<Tokens> {
+  async getTokens(userId: string, email: string): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: userId,
       email: email,

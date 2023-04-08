@@ -29,9 +29,7 @@ export class AuthController {
       req.user,
       res,
     );
-    console.log(req.cookies);
-    console.log(refresh_token);
-    return { msg: 'success', access_token, refresh_token };
+    return { user: { id: req.user.id, email: req.user.email } };
   }
 
   @Post('local/signup')
@@ -49,15 +47,14 @@ export class AuthController {
   @Post('refresh')
   async refresh(@Req() req, @Res({ passthrough: true }) res: Response) {
     console.log('below me is user req');
-    console.log(req.user);
     const { access_token, refresh_token } =
       await this.authService.refreshTokens(
-        req.user.payload.sub,
+        req.user.sub,
         req.cookies.refreshToken,
         res,
       );
 
-    return { msg: 'success', access_token, refresh_token };
+    return { msg: 'success' };
   }
 
   @Get('profile')

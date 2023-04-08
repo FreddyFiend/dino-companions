@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, FC, ReactNode } from "react";
-import { UserContext } from "../../providers/UserProvider";
+import { UserContext } from "../providers/UserProvider";
 
 const Footer = () => {
   const { user, setUser } = useContext(UserContext);
