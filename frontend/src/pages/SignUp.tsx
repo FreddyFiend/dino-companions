@@ -48,7 +48,7 @@ const SignUp = () => {
           <FormInput label="Username" name="username" type="text" />
           <FormInput label="Email" name="email" type="email" />
           <FormInput label="Password" name="password" type="password" />
-          <input type="submit" className="p-btn" />
+          <input type="submit" className="p-btn mt-4" />
         </form>
       </FormProvider>
     </div>

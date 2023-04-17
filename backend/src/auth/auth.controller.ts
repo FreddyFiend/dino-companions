@@ -17,19 +17,29 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { AtGuard } from './at.guard';
 import { RtGuard } from './rt.guard';
 import { User } from '@prisma/client';
+import { UserService } from 'src/user/user.service';
+import { UserData } from 'src/user/decorators/user.decorator';
+import { UserDataDto } from 'src/user/dto/user-data.dto';
+
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('local/login')
   @HttpCode(HttpStatus.OK)
-  async login(@Req() req, @Res({ passthrough: true }) res: Response) {
+  async login(
+    @UserData() user: User,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const { access_token, refresh_token } = await this.authService.login(
-      req.user,
+      user,
       res,
     );
-    return { user: { id: req.user.id, email: req.user.email } };
+    return { user };
   }
 
   @Post('local/signup')
@@ -43,24 +53,29 @@ export class AuthController {
     return { msg: 'success' };
   }
 
+  @Get('local/logout')
+  @HttpCode(HttpStatus.ACCEPTED)
+  async logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    return { msg: 'Successfully logged out!' };
+  }
+
   @UseGuards(RtGuard)
   @Post('refresh')
-  async refresh(@Req() req, @Res({ passthrough: true }) res: Response) {
+  async refresh(
+    @UserData() user: UserDataDto,
+    @Req() req,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     console.log('below me is user req');
     const { access_token, refresh_token } =
       await this.authService.refreshTokens(
-        req.user.sub,
+        user.sub,
         req.cookies.refreshToken,
         res,
       );
 
     return { msg: 'success' };
-  }
-
-  @Get('profile')
-  @UseGuards(AtGuard)
-  getProfile(@Req() req) {
-    console.log(req.cookies);
-    return req.user;
   }
 }

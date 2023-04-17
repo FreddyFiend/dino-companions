@@ -20,17 +20,26 @@ import { Request } from 'express';
 import { AddRoleDto } from './dto/add-role-dto';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
+import { UserData } from './decorators/user.decorator';
+import { UserDataDto } from './dto/user-data.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  /*  @Post()
-  async create(@Body() userData: CreateUserDto): Promise<UserModel> {
-    return this.userService.createUser(userData);
-  } */
+
   @Get()
   findAll() {
     return this.userService.findAll({});
+  }
+
+  @Get('profile')
+  @UseGuards(AtGuard)
+  async findOne(@UserData() user: UserDataDto) {
+    console.log();
+    const { password, ...result } = await this.userService.findOne({
+      id: user.sub,
+    });
+    return result;
   }
 
   @Post('role')

@@ -25,7 +25,7 @@ const FormInput: React.FC<FormInputProps> = ({
         type={type}
         placeholder=" "
         className="p-input"
-        {...register(name)}
+        {...register(name, { valueAsNumber: type === "number" ? true : false })}
       />
       {errors[name] && (
         <span className="text-red-500 text-xs pt-1 block">

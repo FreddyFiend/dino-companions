@@ -6,19 +6,48 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
+  UseGuards,
+  ParseFilePipe,
+  FileTypeValidator,
+  MaxFileSizeValidator,
 } from '@nestjs/common';
+import { Express } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Prisma } from '@prisma/client';
+import { UserData } from 'src/user/decorators/user.decorator';
+import { AtGuard } from 'src/auth/at.guard';
+import { UserDataDto } from 'src/user/dto/user-data.dto';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  @UseGuards(AtGuard)
+  @UseInterceptors(FileInterceptor('image'))
+  create(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+    @Body() productData: CreateProductDto,
+    @UserData() user: UserDataDto,
+  ) {
+    //console.log(file);
+    console.log(productData);
+    console.log(user);
+    console.log(file);
+    return this.productService.create(productData, file, user);
   }
 
   @Get()

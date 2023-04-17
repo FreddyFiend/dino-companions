@@ -5,7 +5,6 @@ const Footer = () => {
   const { user, setUser } = useContext(UserContext);
 
   function changeUser() {
-    setUser({ id: 5, name: "sd", email: "sd" });
     console.log(user);
   }
 

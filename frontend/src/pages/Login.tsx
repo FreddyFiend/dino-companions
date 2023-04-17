@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { api, apiAuth, loginUserFn } from "../routes/usersApi";
 import { UserContext } from "../providers/UserProvider";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const LoginSchema = z.object({
   email: z
@@ -38,9 +39,8 @@ const Login = () => {
         // store.setRequestLoading(true);
       },
       onSuccess: (res) => {
-        toast.success("df");
-        console.log(res);
-        // navigate("/");
+        toast.success(`Logged in as ${res.data.user.email}`);
+        navigate("/");
         setUser(res.data.user);
         localStorage.setItem("user", JSON.stringify(res.data.user));
         /*  store.setRequestLoading(false);
@@ -77,8 +77,9 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = methods;
-  const logUser = () => {
+  const logoutUser = () => {
     localStorage.removeItem("user");
+    setUser(null);
   };
   const signinUser = (values: LoginInput) => {
     api
@@ -104,12 +105,17 @@ const Login = () => {
           <FormInput label="Email" name="email" type="email" />
           <FormInput label="Password" name="password" type="password" />
 
-          <input type="submit" className="p-btn" />
+          <input type="submit" className="p-btn mt-3" />
         </form>
       </FormProvider>
-      <button onClick={logUser}>log user</button>
-      <h3>{user?.id}</h3>
-      <h2>{user?.email}</h2>
+
+      <h1 className="pt-2 text-lg text-center">
+        Not registered yet?{" "}
+        <Link className="font-bold text-blue-600" to="/signup">
+          Signup!
+        </Link>{" "}
+      </h1>
+      <button onClick={logoutUser}>logout user</button>
 
       <button className="p-btn" onClick={getProfile}>
         Get User Info

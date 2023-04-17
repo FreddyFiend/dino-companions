@@ -13,6 +13,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import SignUp from "./pages/SignUp";
 import Product from "./pages/Product";
 import "react-toastify/dist/ReactToastify.css";
+import MyProfile from "./pages/MyProfile";
+import PostProduct from "./pages/PostProduct";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 
               <Route path="login" element={<Login />} />
               <Route path="signup" element={<SignUp />} />
+              <Route path="upload" element={<PostProduct />} />
+              <Route path="profile" element={<MyProfile />} />
               <Route path="product">
                 <Route path=":id" element={<Product />}></Route>
               </Route>

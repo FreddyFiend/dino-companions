@@ -20,6 +20,7 @@ import { UserService } from 'src/user/user.service';
     AtStrategy,
     RtStrategy,
     PrismaService,
+    UserService,
   ],
   exports: [AuthService],
 })
