@@ -8,15 +8,15 @@ const Card: React.FC<Props> = ({ product }) => {
   const newProduct = JSON.stringify(product);
   return (
     <div className="bg-white rounded-md p-4">
-      <img src={glass} />
+      <div className="header">
+        <img src={product.imageThumb} />
+      </div>
       <div className="flex justify-between">
         <div className="first">
-          <h3 className="font-semibold text-lg">Soap Today</h3>
-          <p>Stars</p>
+          <h3 className="font-semibold text-lg">{product.title}</h3>
         </div>
         <div className="second">
-          <h4 className="text-3xl font-bold">$59</h4>
-          <h6 className="line-through">$99</h6>
+          <h4 className="text-xl font-bold">{product.price}</h4>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
 import {
   AiOutlineClose,
@@ -10,6 +10,7 @@ import {
   AiOutlineShoppingCart,
   AiOutlineUser,
   AiOutlineLogout,
+  AiFillTwitterSquare,
 } from "react-icons/ai";
 import { apiAuth } from "../routes/usersApi";
 let initialLinks = [
@@ -49,6 +50,7 @@ const Navbar = () => {
   const { user, setUser } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(true);
   let [links, setLinks] = useState(initialLinks);
+  const [activeLinkId, setActiveLinkId] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,23 +79,40 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="max-w-6xl flex-1 p-1">
-        <div className="flex justify-between h-10  ">
+      <div className="max-w-6xl flex-1 ">
+        <div className="flex justify-between   ">
           <div className="pl-2 font-bold text-2xl flex flex-1  justify-center sm:items-stretch sm:justify-start">
             King
           </div>
 
-          <ul className="hidden sm:flex p-2 list-none items-center  gap-2">
+          <ul className="hidden sm:flex  list-none items-center  gap-2">
             {links.map((link) => (
-              <li key={link.id} className="ml-2">
-                <Link to={link.link} title={link.title}>
-                  <link.icon size={32} />
-                </Link>
+              <li
+                key={link.id}
+                className={` p-2  ${
+                  link.id === activeLinkId ? "bg-slate-400" : ""
+                }`}
+              >
+                <NavLink
+                  to={link.link}
+                  title={link.title}
+                  className={({ isActive }) => {
+                    if (isActive) {
+                      setActiveLinkId(link.id);
+                    }
+                    return "py-2";
+                  }}
+                >
+                  <link.icon
+                    size={32}
+                    className={link.id === activeLinkId ? " text-white" : ""}
+                  />
+                </NavLink>
               </li>
             ))}
           </ul>
           <button
-            className=" sm:hidden absolute right-1 top-2"
+            className=" sm:hidden absolute right-1 top-2 "
             onClick={toggleNavbar}
           >
             {" "}
@@ -114,13 +133,13 @@ const Navbar = () => {
               key={link.id}
               className="hover:bg-slate-400 w-full  group flex justify-center items-center "
             >
-              <Link
+              <NavLink
                 to={link.link}
-                className="font-semibold text-slate-800 p-2 flex flex-col  items-center group-hover:text-white "
+                className="font-semibold text-slate-800 w-full p-2 flex flex-col  items-center group-hover:text-white "
               >
                 <link.icon size={24} />
                 {link.title}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>

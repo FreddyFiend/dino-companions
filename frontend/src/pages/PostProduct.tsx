@@ -90,11 +90,15 @@ const PostProduct = () => {
 
   const onSubmitHandler: SubmitHandler<ProductInput> = async (data) => {
     let formData = new FormData();
+    formData.append("image", data.image[0]);
+
+    const { image, ...serializedData } = data;
+    formData.append("data", JSON.stringify(serializedData));
+    /* 
     formData.append("title", data.title);
     formData.append("description", data.description);
-    formData.append("image", data.image[0]);
     formData.append("quantity", data.quantity.toString());
-    formData.append("price", data.price.toString());
+    formData.append("price", data.price.toString()); */
 
     //console.log(data);
     postProduct(formData);

@@ -12,6 +12,8 @@ import {
   ParseFilePipe,
   FileTypeValidator,
   MaxFileSizeValidator,
+  ValidationPipe,
+  Query,
 } from '@nestjs/common';
 import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -40,18 +42,19 @@ export class ProductController {
       }),
     )
     file: Express.Multer.File,
-    @Body() productData: CreateProductDto,
+    @Body()
+    productData,
     @UserData() user: UserDataDto,
   ) {
     //console.log(file);
-    console.log(productData);
+    const newData = JSON.parse(productData.data);
     console.log(user);
     console.log(file);
-    return this.productService.create(productData, file, user);
+    return this.productService.create(newData, file, user);
   }
 
   @Get()
-  findAll() {
+  findAll(@Query() query) {
     return this.productService.findAll();
   }
 

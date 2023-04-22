@@ -3,48 +3,54 @@ import { Link } from "react-router-dom";
 import Cards from "../components/Cards";
 import Hero from "../components/Hero";
 import Users from "../components/Users";
+import { getProducts } from "../routes/usersApi";
+import { useQuery } from "@tanstack/react-query";
 
-const mrProducts = [
+export const mrProducts = [
   {
-    id: 1,
-    img: "../assets/knives.jpg",
+    id: "1",
+    imageThumb: "../assets/knives.jpg",
     title: "Still a king",
-    desc: "King in the castle",
+    description: "King in the castle",
   },
   {
-    id: 2,
-    img: "../assets/glass.jpg",
+    id: "2",
+    imageThumb: "../assets/glass.jpg",
     title: "Glass onion ",
-    desc: "King in the castle",
+    description: "King in the castle",
   },
   {
-    id: 3,
-    img: "../assets/knives.jpg",
+    id: "3",
+    imageThumb: "../assets/knives.jpg",
     title: "Still a king",
-    desc: "King in the castle",
+    description: "King in the castle",
   },
   {
-    id: 4,
-    img: "../assets/glass.jpg",
+    id: "4",
+    imageThumb: "../assets/glass.jpg",
     title: "Glass onion ",
-    desc: "King in the castle",
+    description: "King in the castle",
   },
 
   {
-    id: 5,
-    img: "../assets/knives.jpg",
+    id: "5",
+    imageThumb: "../assets/knives.jpg",
     title: "Still a king",
-    desc: "King in the castle",
+    description: "King in the castle",
   },
   {
-    id: 6,
-    img: "../assets/glass.jpg",
+    id: "6",
+    imageThumb: "../assets/glass.jpg",
     title: "Glass onion ",
-    desc: "King in the castle",
+    description: "King in the castle",
   },
 ];
 
 const Homepage = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
   const [products, setProducts] = useState(mrProducts);
 
   return (
@@ -53,7 +59,7 @@ const Homepage = () => {
       <button>Get Users</button>
       {/*      <Users /> */}
 
-      <Cards products={products} />
+      <Cards products={data} />
     </div>
   );
 };

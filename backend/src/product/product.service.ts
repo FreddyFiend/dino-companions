@@ -51,7 +51,17 @@ export class ProductService {
   }
 
   findAll() {
-    return `This action returns all product`;
+    return this.prisma.product.findMany({
+      include: {
+        seller: {
+          select: {
+            name: true,
+            email: true,
+            id: true,
+          },
+        },
+      },
+    });
   }
 
   findOne(id: number) {

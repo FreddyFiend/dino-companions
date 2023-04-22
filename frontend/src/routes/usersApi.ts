@@ -66,6 +66,7 @@ apiAuth.interceptors.response.use(
 export const getUsers = () => api.get("/user").then((res) => res.data);
 export const getUser = (id: string) =>
   api.get(`/user/${id}`).then((res) => res.data);
+
 export const getProfile = () =>
   apiAuth.get("auth/profile").then((res) => res.data);
 
@@ -80,3 +81,5 @@ export const postProductFn = (productData: FormData) =>
     withCredentials: true,
     headers: { "Content-Type": "multipart/form-data" },
   });
+
+export const getProducts = () => apiAuth.get("product").then((res) => res.data);
