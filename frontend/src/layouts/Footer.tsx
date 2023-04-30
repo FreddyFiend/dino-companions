@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, FC, ReactNode } from "react";
-import { UserContext } from "../providers/UserProvider";
+import userStore from "../providers/userStore";
 
 const Footer = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = userStore();
 
   function changeUser() {
     console.log(user);

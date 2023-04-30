@@ -53,11 +53,16 @@ export class AuthController {
     return { msg: 'success' };
   }
 
+  @UseGuards(RtGuard)
   @Get('local/logout')
   @HttpCode(HttpStatus.ACCEPTED)
-  async logout(@Res({ passthrough: true }) res: Response) {
+  async logout(
+    @UserData() user: UserDataDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
+    this.authService.logOut(user);
     return { msg: 'Successfully logged out!' };
   }
 

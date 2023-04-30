@@ -50,18 +50,50 @@ export class ProductService {
     return product;
   }
 
-  findAll() {
-    return this.prisma.product.findMany({
-      include: {
-        seller: {
-          select: {
-            name: true,
-            email: true,
-            id: true,
+  findAll(queryParams) {
+    // console.log(queryParams);
+    const { price, date, page } = queryParams;
+    let where = {};
+    let sortParams = [];
+    date ? sortParams.push({ createdAt: date }) : '';
+    if (price && price !== 'all') {
+      let range = price.split('-');
+      where = {
+        AND: [
+          {
+            price: {
+              gt: parseInt(range[0]),
+            },
+          },
+          {
+            price: {
+              lt: parseInt(range[1]),
+            },
+          },
+        ],
+      };
+    }
+
+    let skip = 0 + page ? parseInt(page) * 2 : 0;
+    // console.log(sortParams);
+    return this.prisma.$transaction([
+      this.prisma.product.count(),
+      this.prisma.product.findMany({
+        orderBy: sortParams,
+        where,
+        include: {
+          seller: {
+            select: {
+              name: true,
+              email: true,
+              id: true,
+            },
           },
         },
-      },
-    });
+        take: 2,
+        skip: skip,
+      }),
+    ]);
   }
 
   findOne(id: number) {

@@ -7,6 +7,7 @@ import { jwtConstants } from './constants';
 import * as argon from 'argon2';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { UserDataDto } from 'src/user/dto/user-data.dto';
 
 @Injectable({})
 export class AuthService {
@@ -54,6 +55,19 @@ export class AuthService {
     return { access_token, refresh_token };
   }
 
+  logOut(user: UserDataDto){
+    this.prisma.user.updateMany({
+      where: {
+        id: user.sub,
+        hashedRt: {
+          not: null,
+        },
+      },
+      data: {
+        hashedRt: null,
+      },
+    })
+  }
   async refreshTokens(
     userId: string,
     rt: string,

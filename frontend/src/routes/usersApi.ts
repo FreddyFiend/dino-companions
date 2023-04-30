@@ -23,7 +23,6 @@ apiAuth.interceptors.request.use(
           withCredentials: true,
         })
         .catch((err) => {
-          // console.log("refresh token failed");
           return Promise.reject(err);
         });
       return api(error.config);
@@ -45,7 +44,7 @@ apiAuth.interceptors.response.use(
         .post("auth/refresh", {
           withCredentials: true,
         })
-        .catch((err) => {
+        .catch(async (err) => {
           // console.log("refresh token failed");
 
           return Promise.reject(err);
@@ -59,9 +58,11 @@ apiAuth.interceptors.response.use(
   }
 );
 
-// api.get(`/auth/local/logout`, { withCredentials: true }).then((res) => {});
-//      setUser(null);
-//      localStorage.removeItem("user");
+// const logOutFn = async () => {
+
+//   api.get(`/auth/local/logout`, { withCredentials: true }).then((res) => {});
+//   localStorage.removeItem("user");
+// };
 
 export const getUsers = () => api.get("/user").then((res) => res.data);
 export const getUser = (id: string) =>
@@ -82,4 +83,5 @@ export const postProductFn = (productData: FormData) =>
     headers: { "Content-Type": "multipart/form-data" },
   });
 
-export const getProducts = () => apiAuth.get("product").then((res) => res.data);
+export const getProducts = (params: string) =>
+  apiAuth.get(`/product${params}`).then((res) => res.data);

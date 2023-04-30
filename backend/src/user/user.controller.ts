@@ -36,7 +36,7 @@ export class UserController {
   @UseGuards(AtGuard)
   async findOne(@UserData() user: UserDataDto) {
     console.log();
-    const { password, ...result } = await this.userService.findOne({
+    const { password, hashedRt, ...result } = await this.userService.findOne({
       id: user.sub,
     });
     return result;
@@ -53,8 +53,13 @@ export class UserController {
     }
   }
 
-  // @Patch()
-  // async update(@Body() userData: UpdateUserDto): Promise<UserModel> {
-  //   return this.userService.createUser(userData);
-  // }
+  @Patch()
+  @UseGuards(AtGuard)
+  async update(@Body() userData: UpdateUserDto, @UserData() user: UserDataDto) {
+    const { password, hashedRt, ...result } = await this.userService.editUser(
+      user.sub,
+      userData,
+    );
+    return result;
+  }
 }

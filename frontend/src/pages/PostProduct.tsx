@@ -6,9 +6,9 @@ import { z } from "zod";
 import FormInput from "../components/FormInput";
 import { useMutation } from "@tanstack/react-query";
 import { postProductFn } from "../routes/usersApi";
-import { UserContext } from "../providers/UserProvider";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import userStore from "../providers/userStore";
 
 //   id          String   @id @default(uuid())
 //   title       String
@@ -42,7 +42,7 @@ export type ProductInput = z.TypeOf<typeof ProductSchema>;
 
 const PostProduct = () => {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, logoutUser } = userStore();
 
   const { mutate: postProduct } = useMutation(
     (productData: FormData) => postProductFn(productData),
@@ -51,15 +51,18 @@ const PostProduct = () => {
         // store.setRequestLoading(true);
       },
       onSuccess: (res) => {
-        //toast.success(`Logged in as ${res.data.user.email}`);
-        //navigate("/");
+        toast.success(`Successfully published the ${res.data.title}`);
+        navigate("/");
         console.log(res.data);
         /*  store.setRequestLoading(false);
    
         navigate(from); */
       },
       onError: (error: any) => {
-        console.error(error);
+        if (error.response.status === 401) {
+          logoutUser();
+        }
+        // console.error(error);
         //store.setRequestLoading(false);
         if (Array.isArray((error as any).response.data.error)) {
           (error as any).response.data.error.forEach((el: any) =>

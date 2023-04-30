@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { UserContext } from "../providers/UserProvider";
 import {
   AiOutlineClose,
   AiOutlineMenu,
@@ -13,6 +12,7 @@ import {
   AiFillTwitterSquare,
 } from "react-icons/ai";
 import { apiAuth } from "../routes/usersApi";
+import userStore from "../providers/userStore";
 let initialLinks = [
   {
     id: 0,
@@ -47,7 +47,7 @@ const profileItem = {
 };
 
 const Navbar = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, logoutUser } = userStore();
   const [isOpen, setIsOpen] = useState(true);
   let [links, setLinks] = useState(initialLinks);
   const [activeLinkId, setActiveLinkId] = useState(0);
@@ -68,12 +68,7 @@ const Navbar = () => {
   }, []);
 
   const logOut = () => {
-    apiAuth
-      .get(`/auth/local/logout`, { withCredentials: true })
-      .then((res) => {});
-    setUser(null);
-    localStorage.removeItem("user");
-
+    logoutUser();
     navigate("/");
   };
 
@@ -87,26 +82,19 @@ const Navbar = () => {
 
           <ul className="hidden sm:flex  list-none items-center  gap-2">
             {links.map((link) => (
-              <li
-                key={link.id}
-                className={` p-2  ${
-                  link.id === activeLinkId ? "bg-slate-400" : ""
-                }`}
-              >
-                <NavLink
-                  to={link.link}
-                  title={link.title}
-                  className={({ isActive }) => {
-                    if (isActive) {
-                      setActiveLinkId(link.id);
-                    }
-                    return "py-2";
-                  }}
-                >
-                  <link.icon
-                    size={32}
-                    className={link.id === activeLinkId ? " text-white" : ""}
-                  />
+              <li key={link.id} className={` p-2 `}>
+                <NavLink to={link.link} title={link.title} className="py-2">
+                  {({ isActive }) => (
+                    <>
+                      <span className="icon">
+                        {isActive ? (
+                          <link.icon size={32} className="text-indigo-500 " />
+                        ) : (
+                          <link.icon size={32} />
+                        )}
+                      </span>
+                    </>
+                  )}
                 </NavLink>
               </li>
             ))}

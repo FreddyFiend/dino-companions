@@ -55,7 +55,8 @@ export class ProductController {
 
   @Get()
   findAll(@Query() query) {
-    return this.productService.findAll();
+    console.log(query);
+    return this.productService.findAll(query);
   }
 
   @Get(':id')

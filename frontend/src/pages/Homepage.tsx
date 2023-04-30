@@ -47,11 +47,11 @@ export const mrProducts = [
 ];
 
 const Homepage = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["products"],
-    queryFn: getProducts,
-  });
-  const [products, setProducts] = useState(mrProducts);
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["products"],
+  //   queryFn: getProducts,
+  // });
+  // const [products, setProducts] = useState(mrProducts);
 
   return (
     <div className="bg-slate-200 min-h-screen">
@@ -59,7 +59,7 @@ const Homepage = () => {
       <button>Get Users</button>
       {/*      <Users /> */}
 
-      <Cards products={data} />
+      {/* <Cards products={data} /> */}
     </div>
   );
 };

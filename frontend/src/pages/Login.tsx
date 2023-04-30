@@ -6,9 +6,9 @@ import { z } from "zod";
 import FormInput from "../components/FormInput";
 import { useMutation } from "@tanstack/react-query";
 import { api, apiAuth, loginUserFn } from "../routes/usersApi";
-import { UserContext } from "../providers/UserProvider";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import userStore from "../providers/userStore";
 
 const LoginSchema = z.object({
   email: z
@@ -23,7 +23,7 @@ export type LoginInput = z.TypeOf<typeof LoginSchema>;
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, logoutUser } = userStore();
   const getProfile = () => {
     apiAuth.get("auth/profile", { withCredentials: true }).then((res) => {
       console.log(res.data);
@@ -77,17 +77,8 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = methods;
-  const logoutUser = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-  };
-  const signinUser = (values: LoginInput) => {
-    api
-      .post("auth/local/login", values)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => console.log("king"));
+  const logout = () => {
+    logoutUser();
   };
 
   const onSubmitHandler: SubmitHandler<LoginInput> = (values) => {
@@ -115,7 +106,7 @@ const Login = () => {
           Signup!
         </Link>{" "}
       </h1>
-      <button onClick={logoutUser}>logout user</button>
+      <button onClick={logout}>logout user</button>
 
       <button className="p-btn" onClick={getProfile}>
         Get User Info

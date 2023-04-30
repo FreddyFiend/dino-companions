@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma.service';
 import { Prisma, User } from '@prisma/client';
 import { Request } from 'express';
+import { UserDataDto } from './dto/user-data.dto';
 
 @Injectable()
 export class UserService {
@@ -34,7 +35,16 @@ export class UserService {
       where: userWhereUniqueInput,
     });
   }
-
+  async editUser(id: string, userData: UpdateUserDto) {
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        name: userData.name,
+      },
+    });
+  }
   async addRole(req: Request, reqData: any) {
     try {
       const resp = await this.prisma.roles.create({

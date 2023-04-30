@@ -1,11 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Footer from "./layouts/Footer";
 import Navbar from "./layouts/Navbar";
-import {
-  UserContext,
-  UserContextType,
-  UserProvider,
-} from "./providers/UserProvider";
 import { Outlet } from "react-router-dom";
 function App() {
   return (
@@ -13,7 +8,7 @@ function App() {
       <header className="w-full">
         <Navbar />
       </header>
-      <main>
+      <main className="">
         <Outlet />
       </main>
       <footer>

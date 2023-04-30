@@ -6,6 +6,10 @@ export interface productDto {
   description: string;
   price?: number;
   quantity?: number;
+  seller: {
+    name: string;
+    email: string;
+  };
 }
 // model Product {
 //   id          String   @id @default(uuid())
