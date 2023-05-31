@@ -8,11 +8,11 @@ import {
   AiOutlineShopping,
   AiOutlineShoppingCart,
   AiOutlineUser,
-  AiOutlineLogout,
-  AiFillTwitterSquare,
 } from "react-icons/ai";
 import { apiAuth } from "../routes/usersApi";
 import userStore from "../providers/userStore";
+import { GiDinosaurRex } from "react-icons/gi";
+
 let initialLinks = [
   {
     id: 0,
@@ -48,7 +48,7 @@ const profileItem = {
 
 const Navbar = () => {
   const { user, setUser, logoutUser } = userStore();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   let [links, setLinks] = useState(initialLinks);
   const [activeLinkId, setActiveLinkId] = useState(0);
   const navigate = useNavigate();
@@ -62,22 +62,24 @@ const Navbar = () => {
   }, [user]);
   const toggleNavbar = () => setIsOpen(!isOpen);
   useEffect(() => {
-    apiAuth.get("user/profile").catch((err) => {
-      logOut();
-    });
+    if (user) {
+      apiAuth.get("user/profile").catch((err) => {
+        logOut();
+      });
+    }
   }, []);
 
   const logOut = () => {
     logoutUser();
-    navigate("/");
   };
 
   return (
     <div className="flex justify-center">
       <div className="max-w-6xl flex-1 ">
-        <div className="flex justify-between   ">
-          <div className="pl-2 font-bold text-2xl flex flex-1  justify-center sm:items-stretch sm:justify-start">
-            King
+        <div className="flex justify-between items-center  ">
+          <div className="pl-2 font-bold text-xl flex flex-1  justify-center items-center sm:items-stretch sm:justify-start">
+            <GiDinosaurRex size={36} className="" />{" "}
+            <h6 className="pl-2 "> DinoCompanions</h6>
           </div>
 
           <ul className="hidden sm:flex  list-none items-center  gap-2">

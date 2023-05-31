@@ -6,6 +6,8 @@ export interface productDto {
   description: string;
   price?: number;
   quantity?: number;
+  rating: number;
+  totalReviews: float;
   seller: {
     name: string;
     email: string;

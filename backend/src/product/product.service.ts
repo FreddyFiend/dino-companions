@@ -1,13 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from '../prisma.service';
 import { Product, Prisma } from '@prisma/client';
 import { Express } from 'express';
 import { UserDataDto } from 'src/user/dto/user-data.dto';
-import { catchError, firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom, take } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { AxiosError } from 'axios';
+import { CreateReviewDto } from './dto/create-review.dto';
+import { CreateOrderDto } from '../order/dto/create-order.dto';
 
 @Injectable()
 export class ProductService {
@@ -52,35 +54,46 @@ export class ProductService {
 
   findAll(queryParams) {
     // console.log(queryParams);
-    const { price, date, page } = queryParams;
-    let where = {};
+    const { price, date, page, rating, best } = queryParams;
+    console.log(rating);
+    let parsedRating = 0;
+    let and = [];
     let sortParams = [];
+    if (best) {
+      sortParams.push({ rating: best });
+    }
     date ? sortParams.push({ createdAt: date }) : '';
     if (price && price !== 'all') {
       let range = price.split('-');
-      where = {
-        AND: [
-          {
-            price: {
-              gt: parseInt(range[0]),
-            },
-          },
-          {
-            price: {
-              lt: parseInt(range[1]),
-            },
-          },
-        ],
-      };
+      and.push({
+        price: {
+          gt: parseInt(range[0]),
+        },
+      });
+      and.push({
+        price: {
+          lt: parseInt(range[1]),
+        },
+      });
     }
 
-    let skip = 0 + page ? parseInt(page) * 2 : 0;
+    if (rating) {
+      parsedRating = parseFloat(rating);
+    }
+
+    let skip = 0 + page ? parseInt(page) * 10 : 0;
     // console.log(sortParams);
     return this.prisma.$transaction([
       this.prisma.product.count(),
       this.prisma.product.findMany({
         orderBy: sortParams,
-        where,
+        where: {
+          AND: and,
+          rating: {
+            gte: parsedRating,
+          },
+        },
+
         include: {
           seller: {
             select: {
@@ -90,14 +103,99 @@ export class ProductService {
             },
           },
         },
-        take: 2,
+        take: 10,
         skip: skip,
       }),
     ]);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async createReview(review: CreateReviewDto, userId: string) {
+    const createdReview = await this.prisma.reviews.create({
+      data: {
+        text: review.text,
+        rating: review.rating,
+        userId: userId,
+        productId: review.productId,
+      },
+    });
+
+    const aggregatedResult = await this.prisma.reviews.aggregate({
+      where: {
+        productId: createdReview.productId,
+      },
+      _avg: {
+        rating: true,
+      },
+      _count: {
+        rating: true,
+      },
+    });
+    await this.prisma.product.update({
+      where: {
+        id: createdReview.productId,
+      },
+      data: {
+        rating: aggregatedResult._avg.rating,
+        totalReviews: aggregatedResult._count.rating,
+      },
+    });
+
+    return createdReview;
+  }
+  //   prods
+  //   150b0784-f1a6-41c9-948f-498bc18ddfdb
+  //   30d37de2-5565-43fc-b5f9-96724098e10b
+
+  // user
+  //   89526dd9-c226-41f0-9ff6-f7c026cadd14
+
+  async findOne(id: string, userId: string | null) {
+    console.log(userId);
+    return this.prisma.$transaction([
+      this.prisma.reviews.aggregate({
+        where: {
+          productId: id,
+        },
+        _avg: {
+          rating: true,
+        },
+        _count: {
+          rating: true,
+        },
+      }),
+      this.prisma.product.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          seller: {
+            select: {
+              name: true,
+              id: true,
+              email: true,
+              products: {
+                take: 6,
+              },
+            },
+          },
+          reviews: {
+            where: {
+              userId,
+              productId: id,
+            },
+            include: {
+              user: {
+                select: {
+                  email: true,
+                  name: true,
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+    ]);
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {

@@ -3,10 +3,13 @@ import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import FormInput from "../components/FormInput";
-
+import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { SignUpUserFn } from "../routes/usersApi";
+import userStore from "../providers/userStore";
 const SignUpSchema = z.object({
   name: z.string().min(5, "*Please type at least 5 letters!"),
-  username: z.string().min(5, "*Please type at least 5 letters!"),
   email: z
     .string()
     .min(1, "*Email address is required!")
@@ -19,9 +22,45 @@ const SignUpSchema = z.object({
 });
 
 // extract the inferred type
-type SignUpInput = z.TypeOf<typeof SignUpSchema>;
+export type SignUpInput = z.TypeOf<typeof SignUpSchema>;
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const { user, setUser, logoutUser } = userStore();
+
+  const { mutate: signUpUser } = useMutation(
+    (userData: SignUpInput) => SignUpUserFn(userData),
+    {
+      onMutate() {
+        // store.setRequestLoading(true);
+      },
+      onSuccess: (res) => {
+        toast.success(`Logged in as ${res.data.user.email}`);
+        navigate("/");
+        setUser(res.data.user);
+        /*  store.setRequestLoading(false);
+   
+        navigate(from); */
+      },
+      onError: (error: any) => {
+        //store.setRequestLoading(false);
+        if (Array.isArray((error as any).response.data.error)) {
+          (error as any).response.data.error.forEach((el: any) =>
+            toast.error(el.message, {
+              position: "top-right",
+            })
+          );
+          console.log(error);
+        } else {
+          console.log(error);
+          toast.error((error as any).response.data.message, {
+            position: "top-right",
+          });
+        }
+      },
+    }
+  );
+
   const methods = useForm<SignUpInput>({
     resolver: zodResolver(SignUpSchema),
     shouldUseNativeValidation: true,
@@ -33,8 +72,8 @@ const SignUp = () => {
   } = methods;
 
   const onSubmitHandler: SubmitHandler<SignUpInput> = (values) => {
-    // 👇 Executing the loginUser Mutation
-    console.log(values);
+    //  Executing the loginUser Mutation
+    signUpUser(values);
   };
 
   return (
@@ -45,10 +84,9 @@ const SignUp = () => {
           className="flex flex-col justify-center items-center"
         >
           <FormInput label="Name" name="name" type="text" />
-          <FormInput label="Username" name="username" type="text" />
           <FormInput label="Email" name="email" type="email" />
           <FormInput label="Password" name="password" type="password" />
-          <input type="submit" className="p-btn mt-4" />
+          <input type="submit" className="btn btn-green mt-4" />
         </form>
       </FormProvider>
     </div>

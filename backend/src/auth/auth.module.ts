@@ -10,11 +10,13 @@ import { AtStrategy } from './at.strategy';
 import { PrismaService } from 'src/prisma.service';
 import { RtStrategy } from './rt.strategy';
 import { UserService } from 'src/user/user.service';
+import { ApplyUser } from './applyUser.guard';
 
 @Module({
   imports: [UserModule, PassportModule, JwtModule.register({})],
   controllers: [AuthController],
   providers: [
+    ApplyUser,
     AuthService,
     LocalStrategy,
     AtStrategy,

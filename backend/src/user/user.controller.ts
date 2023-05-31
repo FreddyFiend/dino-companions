@@ -42,6 +42,16 @@ export class UserController {
     return result;
   }
 
+  @Get('profile/:id')
+  async findOneWithProducts(@Param() params: any) {
+    console.log(params);
+    const { password, hashedRt, ...result } =
+      await this.userService.findOneWithProducts({
+        id: params.id,
+      });
+    return result;
+  }
+
   @Post('role')
   @UseGuards(AtGuard, RolesGuard)
   @Roles('killer', 'money')

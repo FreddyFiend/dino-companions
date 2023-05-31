@@ -24,14 +24,7 @@ export type LoginInput = z.TypeOf<typeof LoginSchema>;
 const Login = () => {
   const navigate = useNavigate();
   const { user, setUser, logoutUser } = userStore();
-  const getProfile = () => {
-    apiAuth.get("auth/profile", { withCredentials: true }).then((res) => {
-      console.log(res.data);
-      setUser(res.data);
 
-      console.log("Get Profile Clicked");
-    });
-  };
   const { mutate: loginUser } = useMutation(
     (userData: LoginInput) => loginUserFn(userData),
     {
@@ -96,7 +89,7 @@ const Login = () => {
           <FormInput label="Email" name="email" type="email" />
           <FormInput label="Password" name="password" type="password" />
 
-          <input type="submit" className="p-btn mt-3" />
+          <input type="submit" className="btn btn-green mt-3" />
         </form>
       </FormProvider>
 
@@ -106,11 +99,6 @@ const Login = () => {
           Signup!
         </Link>{" "}
       </h1>
-      <button onClick={logout}>logout user</button>
-
-      <button className="p-btn" onClick={getProfile}>
-        Get User Info
-      </button>
     </div>
   );
 };

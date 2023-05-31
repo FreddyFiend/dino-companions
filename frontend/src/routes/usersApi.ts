@@ -1,6 +1,7 @@
 import axios from "axios";
 import { LoginInput } from "../pages/Login";
 import { ProductInput } from "../pages/PostProduct";
+import { SignUpInput } from "../pages/SignUp";
 
 export const api = axios.create({
   baseURL: "http://localhost:3000",
@@ -77,11 +78,23 @@ export const updateUser = ({ id, ...updatedUser }: { id: string }) =>
 export const loginUserFn = (loginData: LoginInput) =>
   api.post(`/auth/local/login`, loginData, { withCredentials: true });
 
+export const SignUpUserFn = (signupData: SignUpInput) =>
+  api.post(`/auth/local/login`, signupData, { withCredentials: true });
+
 export const postProductFn = (productData: FormData) =>
   apiAuth.post(`/product`, productData, {
     withCredentials: true,
     headers: { "Content-Type": "multipart/form-data" },
   });
 
+export const addReviewFn = (reviewData: ReviewDto) =>
+  apiAuth.post("/product/review", reviewData).then((res) => res.data);
+
 export const getProducts = (params: string) =>
   apiAuth.get(`/product${params}`).then((res) => res.data);
+
+export const getProduct = (param: string) =>
+  apiAuth.get(`/product/${param}`).then((res) => res.data);
+
+export const getUserWithProducts = (param: string) =>
+  apiAuth.get(`/user/profile/${param}`).then((res) => res.data);

@@ -8,7 +8,7 @@ function App() {
       <header className="w-full">
         <Navbar />
       </header>
-      <main className="">
+      <main className="bg-slate-100">
         <Outlet />
       </main>
       <footer>

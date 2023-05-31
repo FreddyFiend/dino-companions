@@ -2,6 +2,12 @@
 /dist
 /node_modules
 
+#env
+.env
+
+#prisma database
+dev.db*
+
 # Logs
 logs
 *.log

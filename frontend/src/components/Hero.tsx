@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import home from "../assets/home.png";
 const Hero: React.FC = () => {
   return (
-    <div className="max-h-screen">
-      <div className="flex justify-center items-center flex-wrap">
-        <div className="hero-section max-w-md  mx-2">
-          <div className="p-2 p-text-5 font-bold ">
-            ENTER THE REALM OF THE <span className="text-yellow-500">KING</span>
-          </div>
-          <div className="mx-2 p-text-1 font-light">
-            We have got the best products for your castle to show your kingdom
-            what it’s like to be a King.
-          </div>
+    <div className="flex justify-center items-center flex-wrap flex-row-reverse h-screen">
+      <div className="offer-section  w-[200px] md:w-[250px] rounded-xl  ">
+        <img src={home} alt="" className="relative object-cover " />
+      </div>
+      <div className="hero-section max-w-lg  mx-2 md:pt-0 ">
+        <div className="p-2 text-2xl md:text-3xl font-bold">
+          Welcome to <span className="text-indigo-500">DinoCompanions!</span>
         </div>
-        <div className="offer-section p-4 m-4  rounded-xl">
-          <img src={home} alt="" className="relative h-full " />
-          <div className="text-4xl font-bold text-white">$5,000</div>
+        <div className="mx-2 sm:text-lg ">
+          {" "}
+          Your premier destination for dinosaur pets! Discover a curated
+          selection of remarkable dinosaur companions, each with their own
+          unique charm and personality.
+        </div>
+        <div className="flex mx-2 pt-4 justify-start">
+          <div className="btn btn-blue text-lg ">BROWSE NOW!</div>
         </div>
       </div>
     </div>

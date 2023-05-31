@@ -4,6 +4,7 @@ export interface User {
   id: string;
   email: string;
 }
+
 const getUser = () => {
   if (localStorage.getItem("user")) {
     return JSON.parse(localStorage.getItem("user") || "{}");

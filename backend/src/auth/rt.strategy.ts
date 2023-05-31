@@ -1,7 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { jwtConstants } from './constants';
 import { Request as RequestType } from 'express';
 
 @Injectable()
@@ -11,7 +10,7 @@ export class RtStrategy extends PassportStrategy(Strategy, 'rt') {
       /*  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), */
       jwtFromRequest: RtStrategy.extractJWT,
       ignoreExpiration: false,
-      secretOrKey: jwtConstants.rtSecret,
+      secretOrKey: process.env.REFRESH_JWT,
       passReqToCallback: true,
     });
   }

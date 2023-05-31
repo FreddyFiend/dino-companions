@@ -24,6 +24,9 @@ import { Prisma } from '@prisma/client';
 import { UserData } from 'src/user/decorators/user.decorator';
 import { AtGuard } from 'src/auth/at.guard';
 import { UserDataDto } from 'src/user/dto/user-data.dto';
+import { CreateReviewDto } from './dto/create-review.dto';
+import { CreateOrderDto } from '../order/dto/create-order.dto';
+import { ApplyUser } from 'src/auth/applyUser.guard';
 
 @Controller('product')
 export class ProductController {
@@ -53,6 +56,15 @@ export class ProductController {
     return this.productService.create(newData, file, user);
   }
 
+  @Post('review')
+  @UseGuards(AtGuard)
+  addReview(
+    @Body(new ValidationPipe({ transform: true })) review: CreateReviewDto,
+    @UserData() user: UserDataDto,
+  ) {
+    return this.productService.createReview(review, user.sub);
+  }
+
   @Get()
   findAll(@Query() query) {
     console.log(query);
@@ -60,8 +72,10 @@ export class ProductController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  @UseGuards(ApplyUser)
+  findOne(@Param('id') id: string, @UserData() userData: UserDataDto) {
+    // return this.productService.findOne(+id);
+    return this.productService.findOne(id, userData?.sub || '');
   }
 
   @Patch(':id')

@@ -3,7 +3,6 @@ import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { JwtPayload, Tokens } from './types';
-import { jwtConstants } from './constants';
 import * as argon from 'argon2';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
@@ -55,7 +54,7 @@ export class AuthService {
     return { access_token, refresh_token };
   }
 
-  logOut(user: UserDataDto){
+  logOut(user: UserDataDto) {
     this.prisma.user.updateMany({
       where: {
         id: user.sub,
@@ -66,7 +65,7 @@ export class AuthService {
       data: {
         hashedRt: null,
       },
-    })
+    });
   }
   async refreshTokens(
     userId: string,
@@ -129,11 +128,11 @@ export class AuthService {
 
     const [at, rt] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
-        secret: jwtConstants.atSecret,
+        secret: process.env.ACCESS_JWT,
         expiresIn: '15m',
       }),
       this.jwtService.signAsync(jwtPayload, {
-        secret: jwtConstants.rtSecret,
+        secret: process.env.REFRESH_JWT,
         expiresIn: '7d',
       }),
     ]);

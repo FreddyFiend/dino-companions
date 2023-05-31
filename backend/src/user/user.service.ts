@@ -35,6 +35,17 @@ export class UserService {
       where: userWhereUniqueInput,
     });
   }
+
+  async findOneWithProducts(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+  ): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: userWhereUniqueInput,
+      include: {
+        products: true,
+      },
+    });
+  }
   async editUser(id: string, userData: UpdateUserDto) {
     return this.prisma.user.update({
       where: {
