@@ -3,13 +3,16 @@ import { LoginInput } from "../pages/Login";
 import { ProductInput } from "../pages/PostProduct";
 import { SignUpInput } from "../pages/SignUp";
 
+//const url = "http://localhost:3000"
+const url = "http://dino-companions.onrender.com";
+
 export const api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: url,
   withCredentials: true,
 });
 
 export const apiAuth = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: url,
   withCredentials: true,
 });
 
