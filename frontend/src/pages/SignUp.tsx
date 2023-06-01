@@ -81,7 +81,7 @@ const SignUp = () => {
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmitHandler)}
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col justify-center items-center h-screen"
         >
           <FormInput label="Name" name="name" type="text" />
           <FormInput label="Email" name="email" type="email" />

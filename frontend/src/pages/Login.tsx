@@ -83,7 +83,7 @@ const Login = () => {
     <div>
       <FormProvider {...methods}>
         <form
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col justify-center items-center h-screen"
           onSubmit={handleSubmit(onSubmitHandler)}
         >
           <FormInput label="Email" name="email" type="email" />

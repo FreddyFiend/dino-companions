@@ -4,7 +4,7 @@ import { ProductInput } from "../pages/PostProduct";
 import { SignUpInput } from "../pages/SignUp";
 
 //const url = "http://localhost:3000"
-const url = "http://dino-companions.onrender.com";
+const url = "https://dino-companions.onrender.com";
 
 export const api = axios.create({
   baseURL: url,

@@ -7,8 +7,15 @@ const Cart = () => {
 
   return (
     <div>
-      <div className="text-center p-4 font-bold text-3xl">Cart Items</div>
-      <CartItems items={cartItems} />
+      <div className="text-center p-4 font-bold text-3xl h-screen">
+        Cart Items
+      </div>
+
+      {cartItems ? (
+        <CartItems items={cartItems} />
+      ) : (
+        <div className="text-xl">Your cart is empty</div>
+      )}
     </div>
   );
 };
