@@ -13,7 +13,7 @@ const Card: React.FC<Props> = ({ product }) => {
   return (
     <div
       className="bg-white rounded-md p-4 min-w-[210px] hover:cursor-pointer"
-      onClick={() => navigate("/product/" + product.id)}
+      onClick={() => navigate("/dino/" + product.id)}
     >
       <div className="header ">
         <img src={product.imageThumb} className="" />

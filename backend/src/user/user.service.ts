@@ -11,21 +11,21 @@ import { UserDataDto } from './dto/user-data.dto';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<User[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.user.findMany({
-      // skip,
-      // cursor,
-      // where,
-      // orderBy,
-    });
-  }
+  // async findAll(params: {
+  //   skip?: number;
+  //   take?: number;
+  //   cursor?: Prisma.UserWhereUniqueInput;
+  //   where?: Prisma.UserWhereInput;
+  //   orderBy?: Prisma.UserOrderByWithRelationInput;
+  // }): Promise<User[]> {
+  //   const { skip, take, cursor, where, orderBy } = params;
+  //   return this.prisma.user.findMany({
+  //     // skip,
+  //     // cursor,
+  //     // where,
+  //     // orderBy,
+  //   });
+  // }
 
   async findOne(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,

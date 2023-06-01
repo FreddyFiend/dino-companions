@@ -43,7 +43,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route path="profile/:userId" element={<MyProfile />} />
             <Route path="products" element={<ProductsPage />} />
             <Route path="cart" element={<Cart />} />
-            <Route path="product">
+            <Route path="dino">
               <Route path=":id" element={<Product />}></Route>
             </Route>
           </Route>

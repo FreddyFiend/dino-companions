@@ -28,7 +28,7 @@ const CartItem: React.FC<Props> = ({ item }) => {
           <img className="ml-auto rounded-md" src={item.imageThumb} />
         </div>
         <div className="px-2  py-2 border basis-1/4">
-          <Link to={`/product/${item.id}`}>
+          <Link to={`/dino/${item.id}`}>
             <div className="font-semibold  text-3xl ">{item.title}</div>{" "}
           </Link>{" "}
           <div className=" text-lg pt-2">

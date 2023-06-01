@@ -27,10 +27,10 @@ import { UserDataDto } from './dto/user-data.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get()
-  findAll() {
-    return this.userService.findAll({});
-  }
+  // @Get()
+  // findAll() {
+  //   return this.userService.findAll({});
+  // }
 
   @Get('profile')
   @UseGuards(AtGuard)
