@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { SignUpUserFn } from "../routes/usersApi";
 import userStore from "../providers/userStore";
+import { Link } from "react-router-dom";
 const SignUpSchema = z.object({
   name: z.string().min(5, "*Please type at least 5 letters!"),
   email: z
@@ -35,9 +36,11 @@ const SignUp = () => {
         // store.setRequestLoading(true);
       },
       onSuccess: (res) => {
-        toast.success(`Logged in as ${res.data.user.email}`);
-        navigate("/");
+        console.log(res.data);
+        toast.success(`Successfully created an account!`);
         setUser(res.data.user);
+        navigate("/");
+
         /*  store.setRequestLoading(false);
    
         navigate(from); */
@@ -77,11 +80,12 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col  items-center h-screen">
+      <div className="text-xl font-semibold pt-16 pb-2">Sign up</div>
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmitHandler)}
-          className="flex flex-col justify-center items-center h-screen"
+          className="flex flex-col justify-center items-center "
         >
           <FormInput label="Name" name="name" type="text" />
           <FormInput label="Email" name="email" type="email" />
@@ -89,6 +93,13 @@ const SignUp = () => {
           <input type="submit" className="btn btn-green mt-4" />
         </form>
       </FormProvider>
+
+      <h1 className="pt-2 text-lg text-center">
+        Already have an account?{" "}
+        <Link className="font-bold text-blue-600" to="/signup">
+          Log in!
+        </Link>{" "}
+      </h1>
     </div>
   );
 };

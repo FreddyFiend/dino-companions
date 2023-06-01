@@ -63,76 +63,68 @@ const Navbar = () => {
   const toggleNavbar = () => setIsOpen(!isOpen);
   useEffect(() => {
     if (user) {
-      apiAuth.get("user/profile").catch((err) => {
-        logOut();
-      });
+      apiAuth
+        .get("user/profile")
+        .then((res) => console.log(res.data))
+        .catch((err) => {
+          logoutUser();
+        });
     }
   }, []);
 
-  const logOut = () => {
-    logoutUser();
-  };
-
   return (
-    <div className="flex justify-center">
-      <div className="max-w-6xl flex-1 ">
-        <div className="flex justify-between items-center  ">
-          <div className="pl-2 font-bold text-xl flex flex-1  justify-center items-center sm:items-stretch sm:justify-start">
-            <GiDinosaurRex size={36} className="" />{" "}
-            <h6 className="pl-2 "> DinoCompanions</h6>
-          </div>
-
-          <ul className="hidden sm:flex  list-none items-center  gap-2">
-            {links.map((link) => (
-              <li key={link.id} className={` p-2 `}>
-                <NavLink to={link.link} title={link.title} className="py-2">
-                  {({ isActive }) => (
-                    <>
-                      <span className="icon">
-                        {isActive ? (
-                          <link.icon size={32} className="text-indigo-500 " />
-                        ) : (
-                          <link.icon size={32} />
-                        )}
-                      </span>
-                    </>
-                  )}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-          <button
-            className=" sm:hidden absolute right-1 top-2 "
-            onClick={toggleNavbar}
-          >
-            {" "}
-            {isOpen ? (
-              <AiOutlineClose size={24} />
-            ) : (
-              <AiOutlineMenu size={24} />
-            )}
-          </button>
+    <div className="py-1">
+      <div className="max-w-6xl mx-auto flex items-center sm:justify-between flex-col sm:flex-row ">
+        <div className="pl-2 font-bold text-xl flex flex-1  justify-center items-center sm:items-stretch sm:justify-start">
+          <GiDinosaurRex size={36} className="" />{" "}
+          <h6 className="pl-2 "> DinoCompanions</h6>
         </div>
+
         <ul
-          className={`sm:hidden  ${
-            isOpen ? "flex" : "hidden"
-          }  p-2 list-none flex-col gap-2 justify-center items-center  transition-all`}
+          className={`   ${
+            isOpen ? "flex flex-col" : "hidden"
+          }  sm:flex sm:flex-row list-none items-center justify-center gap-2`}
         >
           {links.map((link) => (
-            <li
-              key={link.id}
-              className="hover:bg-slate-400 w-full  group flex justify-center items-center "
-            >
+            <li key={link.id} className={` p-2 `}>
               <NavLink
                 to={link.link}
-                className="font-semibold text-slate-800 w-full p-2 flex flex-col  items-center group-hover:text-white "
+                onClick={() => setIsOpen(false)}
+                title={link.title}
+                className="py-2"
               >
-                <link.icon size={24} />
-                {link.title}
+                {({ isActive }) => (
+                  <div className="flex flex-col items-center justify-center">
+                    {isActive ? (
+                      <>
+                        <link.icon size={32} className="text-indigo-500 " />
+                        <p className=" sm:hidden text-opacity-70 text-indigo-500">
+                          {" "}
+                          {link.title}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <link.icon size={32} />
+                        <p className=" sm:hidden text-opacity-70">
+                          {" "}
+                          {link.title}
+                        </p>
+                      </>
+                    )}
+                  </div>
+                )}
               </NavLink>
             </li>
           ))}
         </ul>
+        <button
+          className=" sm:hidden absolute right-1 top-2 "
+          onClick={toggleNavbar}
+        >
+          {" "}
+          {isOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
+        </button>
       </div>
     </div>
   );

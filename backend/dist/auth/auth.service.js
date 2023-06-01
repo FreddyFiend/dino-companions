@@ -107,12 +107,18 @@ let AuthService = class AuthService {
         const { password } = data;
         const hashedPassword = await argon.hash(password);
         const newUser = await this.prisma.user.create({
-            data: { email: data.email, password: hashedPassword },
+            data: { name: data.name, email: data.email, password: hashedPassword },
         });
         const tokens = await this.getTokens(newUser.id, newUser.email);
         await this.updateRtHash(newUser.id, tokens.refresh_token);
         this.setTokensToCookie(res, tokens.access_token, tokens.refresh_token);
-        return tokens;
+        return {
+            user: {
+                name: newUser.name,
+                email: newUser.email,
+                id: newUser.id,
+            },
+        };
     }
     async getTokens(userId, email) {
         const jwtPayload = {

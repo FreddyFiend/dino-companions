@@ -3,6 +3,7 @@
 
 #env
 .env
+/dist
 
 #prisma database
 dev.db*

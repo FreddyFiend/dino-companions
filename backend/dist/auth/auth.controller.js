@@ -30,8 +30,8 @@ let AuthController = class AuthController {
         return { user };
     }
     async signup(dto, res) {
-        const { access_token, refresh_token } = await this.authService.createUser(dto, res);
-        return { msg: 'success' };
+        const { user } = await this.authService.createUser(dto, res);
+        return { msg: 'Successfully registered your account!', user };
     }
     async logout(user, res) {
         res.clearCookie('accessToken');

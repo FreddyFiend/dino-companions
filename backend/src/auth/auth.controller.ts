@@ -45,12 +45,9 @@ export class AuthController {
   @Post('local/signup')
   @HttpCode(HttpStatus.CREATED)
   async signup(@Body() dto: User, @Res({ passthrough: true }) res: Response) {
-    const { access_token, refresh_token } = await this.authService.createUser(
-      dto,
-      res,
-    );
+    const { user } = await this.authService.createUser(dto, res);
 
-    return { msg: 'success' };
+    return { msg: 'Successfully registered your account!', user };
   }
 
   @UseGuards(RtGuard)

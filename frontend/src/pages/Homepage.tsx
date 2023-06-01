@@ -25,7 +25,7 @@ const Homepage = () => {
   return (
     <div className=" ">
       <Hero />
-      <h4 className=" px-2 text-3xl font-semibold pt-8 pb-2">NEW PRODUCTS</h4>
+      <h4 className=" px-2 text-3xl font-semibold pt-8 pb-2">NEW DINOS</h4>
 
       <div className="pt-2 flex gap-4 overflow-x-hidden relative">
         {" "}
@@ -71,7 +71,7 @@ const Homepage = () => {
         </div>
       </div>
 
-      <h4 className=" px-2 text-3xl font-semibold pt-8 pb-2">BEST PRODUCTS</h4>
+      <h4 className=" px-2 text-3xl font-semibold pt-8 pb-2">BEST DINOS</h4>
       <div className=" flex gap-4 overflow-x-hidden relative pb-24">
         {" "}
         <div className="absolute right-1 top-1/2 bg-cyan-100 p-1 bg-opacity-50 rounded-full z-10">

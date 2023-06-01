@@ -6,15 +6,13 @@ const Cart = () => {
   const { cartItems } = cartStore();
 
   return (
-    <div>
-      <div className="text-center p-4 font-bold text-3xl h-screen">
-        Cart Items
-      </div>
+    <div className="h-screen">
+      <div className="text-center p-4 font-bold text-3xl ">Cart Items</div>
 
-      {cartItems ? (
+      {cartItems.length !== 0 ? (
         <CartItems items={cartItems} />
       ) : (
-        <div className="text-xl">Your cart is empty</div>
+        <div className=" p-8  text-xl"> No dinos found in the cart yet!</div>
       )}
     </div>
   );

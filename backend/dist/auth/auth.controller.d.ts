@@ -12,6 +12,7 @@ export declare class AuthController {
     }>;
     signup(dto: User, res: Response): Promise<{
         msg: string;
+        user: any;
     }>;
     logout(user: UserDataDto, res: Response): Promise<{
         msg: string;

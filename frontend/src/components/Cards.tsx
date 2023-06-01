@@ -8,7 +8,7 @@ interface Props {
 
 const Cards: React.FC<Props> = ({ products }) => {
   return (
-    <div className="p-2 flex justify-evenly flex-wrap gap-2 ">
+    <div className=" flex justify-evenly flex-wrap gap-2 ">
       {products?.map((product: productDto) => (
         <Card product={product} key={product.id} />
       ))}

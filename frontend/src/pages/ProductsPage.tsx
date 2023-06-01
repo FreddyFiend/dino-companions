@@ -5,6 +5,7 @@ import Cards from "../components/Cards";
 import ProductFilters from "../components/ProductFilters";
 import { useSearchParams } from "react-router-dom";
 import StarRatings from "../components/StarRatings";
+import { BiChevronsDown, BiChevronsUp } from "react-icons/bi";
 const ProductsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [dateFilter, setDateFilter] = useState("");
@@ -12,17 +13,22 @@ const ProductsPage = () => {
   const [priceFilter, setPriceFilter] = useState("");
   const [ratingFilter, setRatingFilter] = useState("");
 
+  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
+
   const onDateFilterChange = (filter: string) => {
     setDateFilter(filter);
     searchParams.set("date", filter);
+    setIsFilterMenuOpen(false);
   };
   const onRatingFilterChange = (filter: string) => {
     setRatingFilter(filter);
     searchParams.set("rating", filter);
+    setIsFilterMenuOpen(false);
   };
   const onPriceFilterChange = (filter: string) => {
     setPriceFilter(filter);
     searchParams.set("price", filter);
+    setIsFilterMenuOpen(false);
   };
   const { data, isLoading } = useQuery({
     queryKey: ["products", searchParams.toString()],
@@ -37,7 +43,7 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="">
+    <div className="p-4 transition">
       {/* <div className="flex flex-row gap-2 flex-wrap">
         <select
           onChange={(event) => onDateFilterChange(event.target.value)}
@@ -57,9 +63,25 @@ const ProductsPage = () => {
           <option value="5000-10000">5000 to 10000</option>
         </select>
       </div> */}
-
-      <div className="flex ">
-        <div className="basis-1/6 bg-slate-50 px-2 pb-10">
+      <div className="flex justify-center sm:hidden px-2">
+        {isFilterMenuOpen ? (
+          <BiChevronsUp
+            onClick={() => setIsFilterMenuOpen(false)}
+            className=" bg-white opacity-80 text-4xl w-full rounded"
+          />
+        ) : (
+          <BiChevronsDown
+            onClick={() => setIsFilterMenuOpen(true)}
+            className=" bg-white opacity-80 text-4xl w-full rounded"
+          />
+        )}
+      </div>
+      <div className={`flex flex-col  sm:flex-row px-2 `}>
+        <div
+          className={`${
+            isFilterMenuOpen ? "flex" : "hidden"
+          }  flex-col sm:flex   sm:basis-1/6 bg-white  p-2 b pb-10 justify-start items-center `}
+        >
           <div className="text-xl font-semibold pt-2">Time</div>
           <div
             className="hover:cursor-pointer"
@@ -152,9 +174,9 @@ const ProductsPage = () => {
           <Cards products={data && data[1]} />
         </div>
       </div>
-      <ul className="flex flex-row justify-center gap-4">
+      <ul className="flex flex-row justify-center gap-4 py-8">
         {data &&
-          [...Array(data[0])].map((elementInArray, index) => (
+          [...Array(Math.ceil(data[0] / 10))].map((elementInArray, index) => (
             <li className=" " key={index}>
               <button
                 className={`bg-slate-300 ${

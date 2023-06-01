@@ -107,7 +107,7 @@ const Product = () => {
                 {data[1].seller.name}
               </h3>
             </Link>
-            <div className=" md:block justify-center md:justify-center pt-2">
+            <div className=" md:block justify-center  pt-2">
               <div className="">
                 <h2 className="text-2xl font-bold">Price: ${data[1].price}</h2>
                 <StarRatings rating={data[0]?._avg?.rating} />
