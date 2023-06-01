@@ -21,7 +21,6 @@ export class UserService {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.user.findMany({
       // skip,
-      // take,
       // cursor,
       // where,
       // orderBy,
