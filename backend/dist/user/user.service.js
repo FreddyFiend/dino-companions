@@ -16,10 +16,6 @@ let UserService = class UserService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async findAll(params) {
-        const { skip, take, cursor, where, orderBy } = params;
-        return this.prisma.user.findMany({});
-    }
     async findOne(userWhereUniqueInput) {
         return this.prisma.user.findUnique({
             where: userWhereUniqueInput,

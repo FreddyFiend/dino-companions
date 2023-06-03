@@ -5,13 +5,6 @@ import { Request } from 'express';
 export declare class UserService {
     private prisma;
     constructor(prisma: PrismaService);
-    findAll(params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.UserWhereUniqueInput;
-        where?: Prisma.UserWhereInput;
-        orderBy?: Prisma.UserOrderByWithRelationInput;
-    }): Promise<User[]>;
     findOne(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User | null>;
     findOneWithProducts(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User | null>;
     editUser(id: string, userData: UpdateUserDto): Promise<User>;

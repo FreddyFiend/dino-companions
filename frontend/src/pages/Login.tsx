@@ -9,6 +9,7 @@ import { api, apiAuth, loginUserFn } from "../routes/usersApi";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import userStore from "../providers/userStore";
+import LoadingScreen from "../components/LoadingScreen";
 
 const LoginSchema = z.object({
   email: z
@@ -25,13 +26,18 @@ const Login = () => {
   const navigate = useNavigate();
   const { user, setUser, logoutUser } = userStore();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { mutate: loginUser } = useMutation(
     (userData: LoginInput) => loginUserFn(userData),
     {
       onMutate() {
+        setIsLoading(true);
         // store.setRequestLoading(true);
       },
       onSuccess: (res) => {
+        setIsLoading(false);
+
         toast.success(`Logged in as ${res.data.user.email}`);
         navigate("/");
         setUser(res.data.user);
@@ -41,8 +47,8 @@ const Login = () => {
         navigate(from); */
       },
       onError: (error: any) => {
-        console.log(error);
-        console.log("faa");
+        setIsLoading(false);
+
         //store.setRequestLoading(false);
         if (Array.isArray((error as any).response.data.error)) {
           (error as any).response.data.error.forEach((el: any) =>
@@ -78,23 +84,26 @@ const Login = () => {
     loginUser(values);
     //signinUser(values);
   };
-
   return (
     <div className="flex flex-col  items-center h-screen">
       <h3 className="text-xl pt-16 pb-2 font-semibold">Login</h3>
       <FormProvider {...methods}>
         <form
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col justify-center items-center "
           onSubmit={handleSubmit(onSubmitHandler)}
         >
           <FormInput label="Email" name="email" type="email" />
           <FormInput label="Password" name="password" type="password" />
 
-          <input type="submit" className="btn btn-green mt-3" />
+          {isLoading ? (
+            <LoadingScreen />
+          ) : (
+            <input type="submit" className="btn btn-green mt-3" />
+          )}
         </form>
       </FormProvider>
 
-      <h1 className="pt-2 text-lg text-center">
+      <h1 className="pt-4 text-lg text-center">
         Not registered yet?{" "}
         <Link className="font-bold text-blue-600" to="/signup">
           Signup!

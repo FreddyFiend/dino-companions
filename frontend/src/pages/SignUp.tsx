@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { SignUpUserFn } from "../routes/usersApi";
 import userStore from "../providers/userStore";
 import { Link } from "react-router-dom";
+import LoadingScreen from "../components/LoadingScreen";
 const SignUpSchema = z.object({
   name: z.string().min(5, "*Please type at least 5 letters!"),
   email: z
@@ -29,16 +30,19 @@ const SignUp = () => {
   const navigate = useNavigate();
   const { user, setUser, logoutUser } = userStore();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { mutate: signUpUser } = useMutation(
     (userData: SignUpInput) => SignUpUserFn(userData),
     {
       onMutate() {
         // store.setRequestLoading(true);
+        setIsLoading(true);
       },
       onSuccess: (res) => {
-        console.log(res.data);
         toast.success(`Successfully created an account!`);
         setUser(res.data.user);
+        setIsLoading(false);
         navigate("/");
 
         /*  store.setRequestLoading(false);
@@ -46,6 +50,8 @@ const SignUp = () => {
         navigate(from); */
       },
       onError: (error: any) => {
+        setIsLoading(false);
+
         //store.setRequestLoading(false);
         if (Array.isArray((error as any).response.data.error)) {
           (error as any).response.data.error.forEach((el: any) =>
@@ -90,13 +96,18 @@ const SignUp = () => {
           <FormInput label="Name" name="name" type="text" />
           <FormInput label="Email" name="email" type="email" />
           <FormInput label="Password" name="password" type="password" />
-          <input type="submit" className="btn btn-green mt-4" />
+
+          {isLoading ? (
+            <LoadingScreen />
+          ) : (
+            <input type="submit" className="btn btn-green mt-4" />
+          )}
         </form>
       </FormProvider>
 
       <h1 className="pt-2 text-lg text-center">
         Already have an account?{" "}
-        <Link className="font-bold text-blue-600" to="/signup">
+        <Link className="font-bold text-blue-600" to="/login">
           Log in!
         </Link>{" "}
       </h1>

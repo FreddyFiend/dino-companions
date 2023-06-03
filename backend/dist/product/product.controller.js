@@ -46,7 +46,7 @@ let ProductController = class ProductController {
         return this.productService.update(+id, updateProductDto);
     }
     remove(id) {
-        return this.productService.remove(+id);
+        return this.productService.remove(id);
     }
 };
 __decorate([

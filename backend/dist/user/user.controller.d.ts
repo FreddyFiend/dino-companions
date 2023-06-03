@@ -1,13 +1,11 @@
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User as UserModel } from '@prisma/client';
 import { Request } from 'express';
 import { AddRoleDto } from './dto/add-role-dto';
 import { UserDataDto } from './dto/user-data.dto';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
-    findAll(): Promise<UserModel[]>;
     findOne(user: UserDataDto): Promise<{
         id: string;
         email: string;

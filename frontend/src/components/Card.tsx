@@ -12,7 +12,7 @@ const Card: React.FC<Props> = ({ product }) => {
 
   return (
     <div
-      className="bg-white rounded-md p-4 min-w-[210px] hover:cursor-pointer"
+      className="bg-white rounded-md p-4 min-w-[210px] hover:cursor-pointer shadow-md"
       onClick={() => navigate("/dino/" + product.id)}
     >
       <div className="header ">

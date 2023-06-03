@@ -59,11 +59,11 @@ const Homepage = () => {
         >
           {newProducts.isSuccess &&
             newProducts.data[1].map((product: productDto) => (
-              <Card product={product} />
+              <Card product={product} key={product.id} />
             ))}
           <Link
             to={"/products"}
-            className="bg-slate-100 rounded-md p-4 min-w-[210px] hover:cursor-pointer text-center flex justify-center items-center"
+            className="bg-white opacity-60 rounded-md p-4 min-w-[210px] hover:cursor-pointer text-center flex justify-center items-center"
           >
             {" "}
             <h3 className="text-2xl font-bold">SEE MORE</h3>
@@ -104,11 +104,11 @@ const Homepage = () => {
         >
           {bestProducts.isSuccess &&
             bestProducts.data[1].map((product: productDto) => (
-              <Card product={product} />
+              <Card product={product} key={product.id} />
             ))}
           <Link
             to={"/products"}
-            className="bg-slate-100 rounded-md p-4 min-w-[210px] hover:cursor-pointer text-center flex justify-center items-center"
+            className="bg-white opacity-60 rounded-md p-4 min-w-[210px] hover:cursor-pointer text-center flex justify-center items-center"
           >
             {" "}
             <h3 className="text-2xl font-bold">SEE MORE</h3>

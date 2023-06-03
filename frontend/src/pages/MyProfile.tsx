@@ -94,7 +94,7 @@ const MyProfile = () => {
           )}
         </div>
       )}
-      <div className="pt-4 text-3xl"> Products</div>
+      <div className="py-4 text-3xl"> Products</div>
       {data && data.products.length !== 0 ? (
         <Cards products={data && data.products} />
       ) : (

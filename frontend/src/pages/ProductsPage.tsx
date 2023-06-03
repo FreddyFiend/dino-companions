@@ -63,7 +63,7 @@ const ProductsPage = () => {
           <option value="5000-10000">5000 to 10000</option>
         </select>
       </div> */}
-      <div className="flex justify-center sm:hidden px-2">
+      <div className="flex justify-center sm:hidden px-2 mb-3">
         {isFilterMenuOpen ? (
           <BiChevronsUp
             onClick={() => setIsFilterMenuOpen(false)}
@@ -84,47 +84,69 @@ const ProductsPage = () => {
         >
           <div className="text-xl font-semibold pt-2">Time</div>
           <div
-            className="hover:cursor-pointer"
+            className={`hover:cursor-pointer `}
             onClick={() => onDateFilterChange("desc")}
           >
-            Recent
+            <div className={`${dateFilter === "desc" ? "text-sky-500" : ""}`}>
+              Recent
+            </div>
           </div>
           <div
             className="hover:cursor-pointer"
             onClick={() => onDateFilterChange("asc")}
           >
-            Oldest
+            <div className={`${dateFilter === "asc" ? "text-sky-500" : ""}`}>
+              Oldest
+            </div>
           </div>
           <div className="text-xl font-semibold pt-2">Price</div>
           <div
             className="hover:cursor-pointer"
             onClick={() => onPriceFilterChange("all")}
           >
-            All
+            <div className={`${priceFilter === "all" ? "text-sky-500" : ""}`}>
+              All
+            </div>
           </div>
           <div
             className="hover:cursor-pointer"
             onClick={() => onPriceFilterChange("0-100")}
           >
-            0 to 100
+            <div className={`${priceFilter === "0-100" ? "text-sky-500" : ""}`}>
+              0 to 100
+            </div>
           </div>
           <div
             className="hover:cursor-pointer"
             onClick={() => onPriceFilterChange("100-1000")}
           >
-            100 to 1000
+            <div
+              className={`${priceFilter === "100-1000" ? "text-sky-500" : ""}`}
+            >
+              100 to 1000
+            </div>
           </div>
           <div
             className="hover:cursor-pointer"
             onClick={() => onPriceFilterChange("1000-5000")}
           >
-            1000 to 5000
+            <div
+              className={`${priceFilter === "1000-5000" ? "text-sky-500" : ""}`}
+            >
+              1000 to 5000
+            </div>
           </div>
           <div
             className="hover:cursor-pointer"
             onClick={() => onPriceFilterChange("5000-10000")}
           >
-            5000 to 10000
+            <div
+              className={`${
+                priceFilter === "5000-10000" ? "text-sky-500" : ""
+              }`}
+            >
+              5000 to 10000
+            </div>
           </div>
           <div className="text-xl font-semibold pt-2">Rating</div>
           <div

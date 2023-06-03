@@ -37,9 +37,6 @@ let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
-    findAll() {
-        return this.userService.findAll({});
-    }
     async findOne(user) {
         console.log();
         const _a = await this.userService.findOne({
@@ -67,12 +64,6 @@ let UserController = class UserController {
         return result;
     }
 };
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('profile'),
     (0, common_1.UseGuards)(at_guard_1.AtGuard),

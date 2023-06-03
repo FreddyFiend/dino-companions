@@ -11,9 +11,9 @@ export declare class ProductController {
     addReview(review: CreateReviewDto, user: UserDataDto): Promise<import(".prisma/client").Reviews>;
     findAll(query: any): Promise<[number, (import(".prisma/client").Product & {
         seller: {
-            email: string;
-            name: string;
             id: string;
+            name: string;
+            email: string;
         };
     })[]]>;
     findOne(id: string, userData: UserDataDto): Promise<[Prisma.GetReviewsAggregateType<{
@@ -27,19 +27,19 @@ export declare class ProductController {
             rating: true;
         };
     }>, import(".prisma/client").Product & {
-        reviews: (import(".prisma/client").Reviews & {
-            user: {
-                email: string;
-                name: string;
-                id: string;
-            };
-        })[];
         seller: {
-            email: string;
-            name: string;
             id: string;
+            name: string;
+            email: string;
             products: import(".prisma/client").Product[];
         };
+        reviews: (import(".prisma/client").Reviews & {
+            user: {
+                id: string;
+                name: string;
+                email: string;
+            };
+        })[];
     }]>;
     update(id: string, updateProductDto: UpdateProductDto): string;
     remove(id: string): string;
