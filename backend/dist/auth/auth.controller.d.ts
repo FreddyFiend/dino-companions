@@ -9,6 +9,7 @@ export declare class AuthController {
     constructor(authService: AuthService, userService: UserService);
     login(user: User, res: Response): Promise<{
         user: User;
+        access_token: string;
     }>;
     signup(dto: User, res: Response): Promise<{
         msg: string;
@@ -17,6 +18,7 @@ export declare class AuthController {
     logout(user: UserDataDto, res: Response): Promise<{
         msg: string;
     }>;
+    getTest(): Promise<string>;
     refresh(user: UserDataDto, req: any, res: Response): Promise<{
         msg: string;
     }>;

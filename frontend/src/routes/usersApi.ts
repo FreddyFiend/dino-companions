@@ -101,3 +101,6 @@ export const getProduct = (param: string) =>
 
 export const getUserWithProducts = (param: string) =>
   apiAuth.get(`/user/profile/${param}`).then((res) => res.data);
+
+export const deleteProduct = (param: string) =>
+  apiAuth.delete(`/product/${param}`).then((res) => res.data);

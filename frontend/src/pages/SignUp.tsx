@@ -28,21 +28,19 @@ export type SignUpInput = z.TypeOf<typeof SignUpSchema>;
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { user, setUser, logoutUser } = userStore();
-
-  const [isLoading, setIsLoading] = useState(false);
+  const { setUser, setIsScreenLoading } = userStore();
 
   const { mutate: signUpUser } = useMutation(
     (userData: SignUpInput) => SignUpUserFn(userData),
     {
       onMutate() {
         // store.setRequestLoading(true);
-        setIsLoading(true);
+        setIsScreenLoading(true);
       },
       onSuccess: (res) => {
         toast.success(`Successfully created an account!`);
         setUser(res.data.user);
-        setIsLoading(false);
+        setIsScreenLoading(false);
         navigate("/");
 
         /*  store.setRequestLoading(false);
@@ -50,7 +48,7 @@ const SignUp = () => {
         navigate(from); */
       },
       onError: (error: any) => {
-        setIsLoading(false);
+        setIsScreenLoading(false);
 
         //store.setRequestLoading(false);
         if (Array.isArray((error as any).response.data.error)) {
@@ -97,11 +95,7 @@ const SignUp = () => {
           <FormInput label="Email" name="email" type="email" />
           <FormInput label="Password" name="password" type="password" />
 
-          {isLoading ? (
-            <LoadingScreen />
-          ) : (
-            <input type="submit" className="btn btn-green mt-4" />
-          )}
+          <input type="submit" className="btn btn-green mt-4" />
         </form>
       </FormProvider>
 

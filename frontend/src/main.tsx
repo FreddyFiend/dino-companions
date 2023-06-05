@@ -17,6 +17,8 @@ import PostProduct from "./pages/PostProduct";
 import ProductsPage from "./pages/ProductsPage";
 import { GuestRoute, AuthRoute } from "./components";
 import Cart from "./pages/Cart";
+import AdminProducts from "./pages/AdminProducts";
+import LoadingScreen from "./components/LoadingScreen";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route path="/" element={<Homepage />} />
 
             <Route path="login" element={<Login />} />
+            <Route path="admin" element={<AdminProducts />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="upload" element={<PostProduct />} />
             <Route

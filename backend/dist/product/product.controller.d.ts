@@ -9,13 +9,26 @@ export declare class ProductController {
     constructor(productService: ProductService);
     create(file: Express.Multer.File, productData: any, user: UserDataDto): Promise<import(".prisma/client").Product>;
     addReview(review: CreateReviewDto, user: UserDataDto): Promise<import(".prisma/client").Reviews>;
-    findAll(query: any): Promise<[number, (import(".prisma/client").Product & {
+    findAll(query: any): Promise<(number | {
+        id: string;
+        title: string;
+        imageUrl: string;
+        imageThumb: string;
+        description: string;
+        published: boolean;
+        sellerId: string;
+        quantity: number;
+        price: number;
+        rating: number;
+        totalReviews: number;
+        createdAt: Date;
+        updatedAt: Date;
         seller: {
             id: string;
             name: string;
             email: string;
         };
-    })[]]>;
+    }[])[]>;
     findOne(id: string, userData: UserDataDto): Promise<[Prisma.GetReviewsAggregateType<{
         where: {
             productId: string;
@@ -42,5 +55,5 @@ export declare class ProductController {
         })[];
     }]>;
     update(id: string, updateProductDto: UpdateProductDto): string;
-    remove(id: string): string;
+    remove(id: string): Promise<string>;
 }

@@ -24,19 +24,17 @@ export type LoginInput = z.TypeOf<typeof LoginSchema>;
 
 const Login = () => {
   const navigate = useNavigate();
-  const { user, setUser, logoutUser } = userStore();
-
-  const [isLoading, setIsLoading] = useState(false);
+  const { user, setUser, logoutUser, setIsScreenLoading } = userStore();
 
   const { mutate: loginUser } = useMutation(
     (userData: LoginInput) => loginUserFn(userData),
     {
       onMutate() {
-        setIsLoading(true);
+        setIsScreenLoading(true);
         // store.setRequestLoading(true);
       },
       onSuccess: (res) => {
-        setIsLoading(false);
+        setIsScreenLoading(false);
 
         toast.success(`Logged in as ${res.data.user.email}`);
         navigate("/");
@@ -47,7 +45,7 @@ const Login = () => {
         navigate(from); */
       },
       onError: (error: any) => {
-        setIsLoading(false);
+        setIsScreenLoading(false);
 
         //store.setRequestLoading(false);
         if (Array.isArray((error as any).response.data.error)) {
@@ -95,11 +93,7 @@ const Login = () => {
           <FormInput label="Email" name="email" type="email" />
           <FormInput label="Password" name="password" type="password" />
 
-          {isLoading ? (
-            <LoadingScreen />
-          ) : (
-            <input type="submit" className="btn btn-green mt-3" />
-          )}
+          <input type="submit" className="btn btn-green mt-3" />
         </form>
       </FormProvider>
 

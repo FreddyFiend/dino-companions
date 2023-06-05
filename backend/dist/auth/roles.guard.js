@@ -20,9 +20,15 @@ let RolesGuard = class RolesGuard {
     }
     async canActivate(context) {
         const roles = this.reflector.get('roles', context.getHandler());
-        const req = context.switchToHttp().getRequest();
-        console.log(roles);
-        return true;
+        let isAuthorized = false;
+        const request = context.switchToHttp().getRequest();
+        const userRoles = await this.userService.findRoles(request.user.sub);
+        userRoles === null || userRoles === void 0 ? void 0 : userRoles.forEach((role) => {
+            if (roles.includes(role.name)) {
+                return (isAuthorized = true);
+            }
+        });
+        return isAuthorized;
     }
 };
 RolesGuard = __decorate([

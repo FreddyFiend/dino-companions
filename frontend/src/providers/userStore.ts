@@ -15,8 +15,10 @@ const getUser = () => {
 const actions = {
   setUser: (userData: User) => {
     localStorage.setItem("user", JSON.stringify(userData));
-    console.log(userData);
     state.user = userData;
+  },
+  setIsScreenLoading: (bool: boolean) => {
+    state.isScreenLoading = bool;
   },
   logoutUser: () => {
     apiAuth
@@ -29,6 +31,7 @@ const actions = {
 
 const state = proxy({
   user: getUser(),
+  isScreenLoading: false,
 });
 
 function userStore() {

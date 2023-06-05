@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma.service';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, Roles, User } from '@prisma/client';
 import { Request } from 'express';
 import { UserDataDto } from './dto/user-data.dto';
 
@@ -32,6 +32,14 @@ export class UserService {
   ): Promise<User | null> {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
+    });
+  }
+
+  async findRoles(userId: string): Promise<Roles[] | null> {
+    return this.prisma.roles.findMany({
+      where: {
+        userId,
+      },
     });
   }
 

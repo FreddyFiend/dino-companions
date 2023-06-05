@@ -20,6 +20,8 @@ import { User } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
 import { UserData } from 'src/user/decorators/user.decorator';
 import { UserDataDto } from 'src/user/dto/user-data.dto';
+import { RolesGuard } from './roles.guard';
+import { Roles } from './roles.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -39,7 +41,7 @@ export class AuthController {
       user,
       res,
     );
-    return { user };
+    return { user, access_token };
   }
 
   @Post('local/signup')
@@ -61,6 +63,13 @@ export class AuthController {
     res.clearCookie('refreshToken');
     this.authService.logOut(user);
     return { msg: 'Successfully logged out!' };
+  }
+
+  @UseGuards(AtGuard, RolesGuard)
+  @Roles('admin')
+  @Get('test')
+  async getTest() {
+    return 'success';
   }
 
   @UseGuards(RtGuard)

@@ -44,5 +44,5 @@ export declare class ProductService {
         })[];
     }]>;
     update(id: number, updateProductDto: UpdateProductDto): string;
-    remove(id: string): string;
+    remove(id: string): Promise<string>;
 }

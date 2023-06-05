@@ -21,6 +21,13 @@ let UserService = class UserService {
             where: userWhereUniqueInput,
         });
     }
+    async findRoles(userId) {
+        return this.prisma.roles.findMany({
+            where: {
+                userId,
+            },
+        });
+    }
     async findOneWithProducts(userWhereUniqueInput) {
         return this.prisma.user.findUnique({
             where: userWhereUniqueInput,

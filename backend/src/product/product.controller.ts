@@ -27,6 +27,8 @@ import { UserDataDto } from 'src/user/dto/user-data.dto';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { CreateOrderDto } from '../order/dto/create-order.dto';
 import { ApplyUser } from 'src/auth/applyUser.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
 
 @Controller('product')
 export class ProductController {
@@ -66,9 +68,17 @@ export class ProductController {
   }
 
   @Get()
-  findAll(@Query() query) {
+  async findAll(@Query() query) {
     console.log(query);
-    return this.productService.findAll(query);
+
+    const products = await this.productService.findAll(query);
+    if (products && products[1].length) {
+      const productsWithoutDeleteUrl = products[1].map(
+        ({ imageDeleteUrl, ...keptAttrs }) => keptAttrs,
+      );
+
+      return [products[0], productsWithoutDeleteUrl];
+    }
   }
 
   @Get(':id')
@@ -84,7 +94,10 @@ export class ProductController {
   }
 
   @Delete(':id')
+  @UseGuards(AtGuard, RolesGuard)
+  @Roles('admin')
   remove(@Param('id') id: string) {
+    // return `this action removes ${id}`;
     return this.productService.remove(id);
   }
 }

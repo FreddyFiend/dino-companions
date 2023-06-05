@@ -16,10 +16,13 @@ exports.AuthController = void 0;
 const auth_service_1 = require("./auth.service");
 const common_1 = require("@nestjs/common");
 const local_auth_guard_1 = require("./local-auth.guard");
+const at_guard_1 = require("./at.guard");
 const rt_guard_1 = require("./rt.guard");
 const user_service_1 = require("../user/user.service");
 const user_decorator_1 = require("../user/decorators/user.decorator");
 const user_data_dto_1 = require("../user/dto/user-data.dto");
+const roles_guard_1 = require("./roles.guard");
+const roles_decorator_1 = require("./roles.decorator");
 let AuthController = class AuthController {
     constructor(authService, userService) {
         this.authService = authService;
@@ -27,7 +30,7 @@ let AuthController = class AuthController {
     }
     async login(user, res) {
         const { access_token, refresh_token } = await this.authService.login(user, res);
-        return { user };
+        return { user, access_token };
     }
     async signup(dto, res) {
         const { user } = await this.authService.createUser(dto, res);
@@ -38,6 +41,9 @@ let AuthController = class AuthController {
         res.clearCookie('refreshToken');
         this.authService.logOut(user);
         return { msg: 'Successfully logged out!' };
+    }
+    async getTest() {
+        return 'success';
     }
     async refresh(user, req, res) {
         console.log('below me is user req');
@@ -74,6 +80,14 @@ __decorate([
     __metadata("design:paramtypes", [user_data_dto_1.UserDataDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
+__decorate([
+    (0, common_1.UseGuards)(at_guard_1.AtGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('admin'),
+    (0, common_1.Get)('test'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getTest", null);
 __decorate([
     (0, common_1.UseGuards)(rt_guard_1.RtGuard),
     (0, common_1.Post)('refresh'),

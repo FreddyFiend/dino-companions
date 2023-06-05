@@ -193,6 +193,7 @@ const ProductsPage = () => {
           </div>
         </div>{" "}
         <div className="basis-5/6">
+          {isLoading && <div className="text-xl font-bold p-4">Loading...</div>}
           <Cards products={data && data[1]} />
         </div>
       </div>
