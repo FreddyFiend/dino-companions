@@ -14,6 +14,7 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma.service");
 const rxjs_1 = require("rxjs");
 const axios_1 = require("@nestjs/axios");
+const FormData = require("form-data");
 let ProductService = class ProductService {
     constructor(prisma, httpService) {
         this.prisma = prisma;

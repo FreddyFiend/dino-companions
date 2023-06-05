@@ -120,7 +120,7 @@ const PostProduct = () => {
           <FormInput label="Quantity" name="quantity" type="number" />
           <FormInput label="Price" name="price" type="number" />
 
-          <input type="submit" className="p-btn mt-3" />
+          <input type="submit" className="btn btn-blue mt-3" />
         </form>
       </FormProvider>
     </div>

@@ -10,7 +10,7 @@ import { HttpService } from '@nestjs/axios';
 import { AxiosError } from 'axios';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { CreateOrderDto } from '../order/dto/create-order.dto';
-import FormData from 'form-data';
+import * as FormData from 'form-data';
 
 @Injectable()
 export class ProductService {
