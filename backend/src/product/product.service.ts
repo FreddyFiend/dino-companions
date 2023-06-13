@@ -54,9 +54,7 @@ export class ProductService {
   }
 
   findAll(queryParams) {
-    // console.log(queryParams);
     const { price, date, page, rating, best } = queryParams;
-    console.log(rating);
     let parsedRating = 0;
     let and = [];
     let sortParams = [];
@@ -83,7 +81,6 @@ export class ProductService {
     }
 
     let skip = 0 + page ? parseInt(page) * 10 : 0;
-    // console.log(sortParams);
     return this.prisma.$transaction([
       this.prisma.product.count(),
       this.prisma.product.findMany({
@@ -151,7 +148,6 @@ export class ProductService {
   //   89526dd9-c226-41f0-9ff6-f7c026cadd14
 
   async findOne(id: string, userId: string | null) {
-    console.log(userId);
     return this.prisma.$transaction([
       this.prisma.reviews.aggregate({
         where: {

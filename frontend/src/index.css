@@ -11,7 +11,7 @@
 }
 
 .btn {
-  @apply px-2 py-1 transition ease-in-out duration-300  rounded-sm font-bold uppercase;
+  @apply px-6 py-2 transition ease-in-out duration-300  rounded-md font-bold uppercase;
 }
 
 .btn-red {

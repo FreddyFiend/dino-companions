@@ -8,7 +8,7 @@ interface Props {
 
 const CartItems: React.FC<Props> = ({ items }) => {
   return (
-    <div className="">
+    <div className="flex flex-wrap gap-4">
       {items.map((item) => {
         return <CartItem item={item} key={item.id} />;
       })}

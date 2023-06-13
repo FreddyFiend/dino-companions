@@ -13,8 +13,8 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div className="bg-slate-700 px-2 py-4 text-white text-center">
-      <div className="    md:flex ">
-        <div className="menu pt-4 basis-1/3">
+      <div className="    md:flex justify-center">
+        <div className="menu pt-4 ">
           <div className="text-xl font-bold ">MENU</div>
           <Link to="/">
             <p>HOME</p>
@@ -24,7 +24,7 @@ const Footer = () => {
           </Link>
           <Link to="/cart">CART</Link>
         </div>
-        <div className="contact pt-4 basis-1/3">
+        {/* <div className="contact pt-4 basis-1/3">
           <div className="text-xl font-bold">CONTACT US</div>
           <div className="flex justify-center pt-1 gap-1">
             <AiOutlineTwitter size={24} />
@@ -34,14 +34,15 @@ const Footer = () => {
             <AiOutlineGithub size={24} />
             <AiOutlineWhatsApp size={24} />
           </div>
-        </div>
-        <div className="help basis-1/3 pt-4">
+        </div> */}
+        {/* <div className="help basis-1/3 pt-4">
           <div className="text-xl font-bold ">HELP</div>
           <p>ABOUT THIS PROJECT</p>
           <p>OUR MISSION</p>
-        </div>
+        </div> */}
       </div>
-      <div className="text-white pt-2">Fiends Productions Limited</div>
+      <div className="text-white pt-2 opacity-40">Mohsin Raza</div>
+      <div className="text-white opacity-40">Fiends Productions Limited</div>
     </div>
   );
 };

@@ -41,15 +41,12 @@ let ProductController = class ProductController {
     }
     create(file, productData, user) {
         const newData = JSON.parse(productData.data);
-        console.log(user);
-        console.log(file);
         return this.productService.create(newData, file, user);
     }
     addReview(review, user) {
         return this.productService.createReview(review, user.sub);
     }
     async findAll(query) {
-        console.log(query);
         const products = await this.productService.findAll(query);
         if (products && products[1].length) {
             const productsWithoutDeleteUrl = products[1].map((_a) => {

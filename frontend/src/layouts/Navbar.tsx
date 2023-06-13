@@ -81,9 +81,12 @@ const Navbar = () => {
         </div>
 
         <ul
+          // className={`   ${
+          //   isOpen ? "flex flex-col" : "hidden"
+          // }  sm:flex sm:flex-row list-none items-center justify-center gap-2`}
           className={`   ${
-            isOpen ? "flex flex-col" : "hidden"
-          }  sm:flex sm:flex-row list-none items-center justify-center gap-2`}
+            isOpen ? "grid grid-rows-4 " : "hidden"
+          }  sm:grid sm:grid-cols-4 list-none items-center justify-center gap-2`}
         >
           {links.map((link) => (
             <li key={link.id} className={` p-2 `}>

@@ -42,15 +42,18 @@ export type ProductInput = z.TypeOf<typeof ProductSchema>;
 
 const PostProduct = () => {
   const navigate = useNavigate();
-  const { user, setUser, logoutUser } = userStore();
+  const { user, setUser, logoutUser, setIsScreenLoading } = userStore();
 
   const { mutate: postProduct } = useMutation(
     (productData: FormData) => postProductFn(productData),
     {
       onMutate() {
+        setIsScreenLoading(true);
         // store.setRequestLoading(true);
       },
       onSuccess: (res) => {
+        setIsScreenLoading(false);
+
         toast.success(`Successfully published the ${res.data.title}`);
         navigate("/");
         console.log(res.data);
@@ -59,8 +62,14 @@ const PostProduct = () => {
         navigate(from); */
       },
       onError: (error: any) => {
+        setIsScreenLoading(false);
+
         if (error.response.status === 401) {
           logoutUser();
+          toast.error("please Login!", {
+            position: "top-right",
+          });
+          navigate("/");
         }
         // console.error(error);
         //store.setRequestLoading(false);
@@ -111,7 +120,7 @@ const PostProduct = () => {
     <div>
       <FormProvider {...methods}>
         <form
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col justify-center items-center py-8"
           onSubmit={handleSubmit(onSubmitHandler)}
         >
           <FormInput label="Title" name="title" type="text" />

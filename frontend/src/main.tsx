@@ -19,6 +19,7 @@ import { GuestRoute, AuthRoute } from "./components";
 import Cart from "./pages/Cart";
 import AdminProducts from "./pages/AdminProducts";
 import LoadingScreen from "./components/LoadingScreen";
+import Checkout from "./pages/Checkout";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <Route path="profile/:userId" element={<MyProfile />} />
             <Route path="products" element={<ProductsPage />} />
             <Route path="cart" element={<Cart />} />
+            <Route path="checkout" element={<Checkout />} />
             <Route path="dino">
               <Route path=":id" element={<Product />}></Route>
             </Route>

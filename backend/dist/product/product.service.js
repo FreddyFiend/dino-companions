@@ -45,7 +45,6 @@ let ProductService = class ProductService {
     }
     findAll(queryParams) {
         const { price, date, page, rating, best } = queryParams;
-        console.log(rating);
         let parsedRating = 0;
         let and = [];
         let sortParams = [];
@@ -126,7 +125,6 @@ let ProductService = class ProductService {
         return createdReview;
     }
     async findOne(id, userId) {
-        console.log(userId);
         return this.prisma.$transaction([
             this.prisma.reviews.aggregate({
                 where: {

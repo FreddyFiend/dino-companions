@@ -51,10 +51,8 @@ export class ProductController {
     productData,
     @UserData() user: UserDataDto,
   ) {
-    //console.log(file);
     const newData = JSON.parse(productData.data);
-    console.log(user);
-    console.log(file);
+
     return this.productService.create(newData, file, user);
   }
 
@@ -69,8 +67,6 @@ export class ProductController {
 
   @Get()
   async findAll(@Query() query) {
-    console.log(query);
-
     const products = await this.productService.findAll(query);
     if (products && products[1].length) {
       const productsWithoutDeleteUrl = products[1].map(

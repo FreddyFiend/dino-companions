@@ -17,6 +17,9 @@ const getCartItems = () => {
 
 const setCartItems = (cartItemsData: CartItems[]) => {
   localStorage.setItem("cart_items", JSON.stringify(cartItemsData));
+  let total = 0;
+  cartItemsData.forEach((item) => (total += item.price * item.qty));
+  state.totalPrice = total;
   state.cartItems = cartItemsData;
 };
 
@@ -51,6 +54,7 @@ const actions = {
 
 const state = proxy({
   cartItems: getCartItems(),
+  totalPrice: 0,
 });
 
 function cartStore() {
