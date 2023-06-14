@@ -5,16 +5,20 @@ import { Product, Prisma } from '@prisma/client';
 import { UserDataDto } from 'src/user/dto/user-data.dto';
 import { HttpService } from '@nestjs/axios';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { CheckoutItemsDto } from './dto/checkout-items-dto';
+import Stripe from 'stripe';
 export declare class ProductService {
     private prisma;
     private httpService;
+    stripe: Stripe;
     constructor(prisma: PrismaService, httpService: HttpService);
     create(productData: Prisma.ProductCreateInput, file: Express.Multer.File, user: UserDataDto): Promise<Product>;
+    checkout(checkoutItems: CheckoutItemsDto[], userId: string): Promise<string | false>;
     findAll(queryParams: any): Promise<[number, (Product & {
         seller: {
-            email: string;
-            name: string;
             id: string;
+            name: string;
+            email: string;
         };
     })[]]>;
     createReview(review: CreateReviewDto, userId: string): Promise<import(".prisma/client").Reviews>;
@@ -29,19 +33,19 @@ export declare class ProductService {
             rating: true;
         };
     }>, Product & {
+        seller: {
+            id: string;
+            name: string;
+            email: string;
+            products: Product[];
+        };
         reviews: (import(".prisma/client").Reviews & {
             user: {
-                email: string;
-                name: string;
                 id: string;
+                name: string;
+                email: string;
             };
         })[];
-        seller: {
-            email: string;
-            name: string;
-            products: Product[];
-            id: string;
-        };
     }]>;
     update(id: number, updateProductDto: UpdateProductDto): string;
     remove(id: string): Promise<string>;

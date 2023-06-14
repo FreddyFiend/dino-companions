@@ -15,12 +15,25 @@ const getCartItems = () => {
   return [];
 };
 
+const getTotalPrice = () => {
+  if (localStorage.getItem("cart_items")) {
+    const cartItemsData = JSON.parse(
+      localStorage.getItem("cart_items") || "[]"
+    );
+    let total = 0;
+    cartItemsData.forEach(
+      (item: CartItems) => (total += item.price * item.qty)
+    );
+    return total;
+  }
+  return 0;
+};
+
 const setCartItems = (cartItemsData: CartItems[]) => {
   localStorage.setItem("cart_items", JSON.stringify(cartItemsData));
-  let total = 0;
-  cartItemsData.forEach((item) => (total += item.price * item.qty));
-  state.totalPrice = total;
+
   state.cartItems = cartItemsData;
+  state.totalPrice = getTotalPrice();
 };
 
 const actions = {
@@ -54,7 +67,7 @@ const actions = {
 
 const state = proxy({
   cartItems: getCartItems(),
-  totalPrice: 0,
+  totalPrice: getTotalPrice(),
 });
 
 function cartStore() {

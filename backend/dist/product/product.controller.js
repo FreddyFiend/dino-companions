@@ -46,6 +46,9 @@ let ProductController = class ProductController {
     addReview(review, user) {
         return this.productService.createReview(review, user.sub);
     }
+    checkout(checkoutItems, user) {
+        return this.productService.checkout(checkoutItems, user === null || user === void 0 ? void 0 : user.sub);
+    }
     async findAll(query) {
         const products = await this.productService.findAll(query);
         if (products && products[1].length) {
@@ -92,6 +95,14 @@ __decorate([
         user_data_dto_1.UserDataDto]),
     __metadata("design:returntype", void 0)
 ], ProductController.prototype, "addReview", null);
+__decorate([
+    (0, common_1.Post)('checkout'),
+    __param(0, (0, common_1.Body)(new common_1.ValidationPipe({ transform: true }))),
+    __param(1, (0, user_decorator_1.UserData)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Array, user_data_dto_1.UserDataDto]),
+    __metadata("design:returntype", void 0)
+], ProductController.prototype, "checkout", null);
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),

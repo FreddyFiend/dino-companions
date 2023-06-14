@@ -29,6 +29,7 @@ import { CreateOrderDto } from '../order/dto/create-order.dto';
 import { ApplyUser } from 'src/auth/applyUser.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
+import { CheckoutItemsDto } from './dto/checkout-items-dto';
 
 @Controller('product')
 export class ProductController {
@@ -63,6 +64,15 @@ export class ProductController {
     @UserData() user: UserDataDto,
   ) {
     return this.productService.createReview(review, user.sub);
+  }
+
+  @Post('checkout')
+  checkout(
+    @Body(new ValidationPipe({ transform: true }))
+    checkoutItems: CheckoutItemsDto[],
+    @UserData() user: UserDataDto,
+  ) {
+    return this.productService.checkout(checkoutItems, user?.sub);
   }
 
   @Get()

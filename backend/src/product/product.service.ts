@@ -11,13 +11,18 @@ import { AxiosError } from 'axios';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { CreateOrderDto } from '../order/dto/create-order.dto';
 import * as FormData from 'form-data';
+import { CheckoutItemsDto } from './dto/checkout-items-dto';
+import Stripe from 'stripe';
 
 @Injectable()
 export class ProductService {
-  constructor(
-    private prisma: PrismaService,
-    private httpService: HttpService,
-  ) {}
+  stripe: Stripe;
+  constructor(private prisma: PrismaService, private httpService: HttpService) {
+    this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      typescript: true,
+      apiVersion: '2022-11-15',
+    });
+  }
   async create(
     productData: Prisma.ProductCreateInput,
     file: Express.Multer.File,
@@ -51,6 +56,56 @@ export class ProductService {
       data,
     });
     return product;
+  }
+
+  async checkout(checkoutItems: CheckoutItemsDto[], userId: string) {
+    console.log(checkoutItems);
+    const checkoutItemsList = checkoutItems;
+    const productIds = checkoutItemsList.map((item) => item.itemId);
+    const products = await this.prisma.product.findMany({
+      where: {
+        id: { in: productIds },
+      },
+      select: {
+        price: true,
+        id: true,
+        title: true,
+      },
+    });
+
+    const lineItems = products.map((item) => {
+      let confirmedItem = {};
+      checkoutItemsList.forEach((chItem) => {
+        if (chItem.itemId === item.id) {
+          confirmedItem = {
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: item.title,
+              },
+              unit_amount: item.price * 100,
+            },
+            quantity: chItem.quantity,
+          };
+        }
+      });
+
+      return confirmedItem;
+    });
+    try {
+      const session = await this.stripe.checkout.sessions.create({
+        line_items: lineItems,
+        mode: 'payment',
+        success_url: `${process.env.SERVER_URL}/success`,
+        cancel_url: `${process.env.SERVER_URL}/cancel`,
+      });
+      return session.url;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+
+    // res.redirect(303, session.url);
   }
 
   findAll(queryParams) {

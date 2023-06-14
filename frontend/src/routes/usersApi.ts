@@ -104,3 +104,7 @@ export const getUserWithProducts = (param: string) =>
 
 export const deleteProduct = (param: string) =>
   apiAuth.delete(`/product/${param}`).then((res) => res.data);
+
+export const checkoutFn = (
+  checkoutItems: { itemId: string; quantity: number }[]
+) => apiAuth.post(`/product/checkout`, checkoutItems).then((res) => res.data);

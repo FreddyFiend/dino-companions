@@ -15,10 +15,15 @@ const prisma_service_1 = require("../prisma.service");
 const rxjs_1 = require("rxjs");
 const axios_1 = require("@nestjs/axios");
 const FormData = require("form-data");
+const stripe_1 = require("stripe");
 let ProductService = class ProductService {
     constructor(prisma, httpService) {
         this.prisma = prisma;
         this.httpService = httpService;
+        this.stripe = new stripe_1.default(process.env.STRIPE_SECRET_KEY, {
+            typescript: true,
+            apiVersion: '2022-11-15',
+        });
     }
     async create(productData, file, user) {
         const formData = new FormData();
@@ -42,6 +47,52 @@ let ProductService = class ProductService {
             data,
         });
         return product;
+    }
+    async checkout(checkoutItems, userId) {
+        console.log(checkoutItems);
+        const checkoutItemsList = checkoutItems;
+        const productIds = checkoutItemsList.map((item) => item.itemId);
+        const products = await this.prisma.product.findMany({
+            where: {
+                id: { in: productIds },
+            },
+            select: {
+                price: true,
+                id: true,
+                title: true,
+            },
+        });
+        const lineItems = products.map((item) => {
+            let confirmedItem = {};
+            checkoutItemsList.forEach((chItem) => {
+                if (chItem.itemId === item.id) {
+                    confirmedItem = {
+                        price_data: {
+                            currency: 'usd',
+                            product_data: {
+                                name: item.title,
+                            },
+                            unit_amount: item.price * 100,
+                        },
+                        quantity: chItem.quantity,
+                    };
+                }
+            });
+            return confirmedItem;
+        });
+        try {
+            const session = await this.stripe.checkout.sessions.create({
+                line_items: lineItems,
+                mode: 'payment',
+                success_url: `${process.env.SERVER_URL}/success`,
+                cancel_url: `${process.env.SERVER_URL}/cancel`,
+            });
+            return session.url;
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
     }
     findAll(queryParams) {
         const { price, date, page, rating, best } = queryParams;
@@ -185,8 +236,7 @@ let ProductService = class ProductService {
 };
 ProductService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        axios_1.HttpService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService, axios_1.HttpService])
 ], ProductService);
 exports.ProductService = ProductService;
 //# sourceMappingURL=product.service.js.map
