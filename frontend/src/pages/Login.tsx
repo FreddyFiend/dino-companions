@@ -84,6 +84,7 @@ const Login = () => {
   };
   return (
     <div className="flex flex-col  items-center h-screen">
+      email: john@doe.com pass: JohnDoe666
       <h3 className="text-xl pt-16 pb-2 font-semibold">Login</h3>
       <FormProvider {...methods}>
         <form
@@ -96,7 +97,6 @@ const Login = () => {
           <input type="submit" className="btn btn-green mt-3" />
         </form>
       </FormProvider>
-
       <h1 className="pt-4 text-lg text-center">
         Not registered yet?{" "}
         <Link className="font-bold text-blue-600" to="/signup">

@@ -60,6 +60,7 @@ let ProductService = class ProductService {
                 price: true,
                 id: true,
                 title: true,
+                imageThumb: true,
             },
         });
         const lineItems = products.map((item) => {
@@ -71,6 +72,7 @@ let ProductService = class ProductService {
                             currency: 'usd',
                             product_data: {
                                 name: item.title,
+                                images: [item.imageThumb],
                             },
                             unit_amount: item.price * 100,
                         },

@@ -70,6 +70,7 @@ export class ProductService {
         price: true,
         id: true,
         title: true,
+        imageThumb: true,
       },
     });
 
@@ -82,6 +83,7 @@ export class ProductService {
               currency: 'usd',
               product_data: {
                 name: item.title,
+                images: [item.imageThumb],
               },
               unit_amount: item.price * 100,
             },

@@ -16,9 +16,9 @@ export declare class ProductService {
     checkout(checkoutItems: CheckoutItemsDto[], userId: string): Promise<string | false>;
     findAll(queryParams: any): Promise<[number, (Product & {
         seller: {
-            id: string;
-            name: string;
             email: string;
+            name: string;
+            id: string;
         };
     })[]]>;
     createReview(review: CreateReviewDto, userId: string): Promise<import(".prisma/client").Reviews>;
@@ -33,19 +33,19 @@ export declare class ProductService {
             rating: true;
         };
     }>, Product & {
-        seller: {
-            id: string;
-            name: string;
-            email: string;
-            products: Product[];
-        };
         reviews: (import(".prisma/client").Reviews & {
             user: {
-                id: string;
-                name: string;
                 email: string;
+                name: string;
+                id: string;
             };
         })[];
+        seller: {
+            email: string;
+            name: string;
+            products: Product[];
+            id: string;
+        };
     }]>;
     update(id: number, updateProductDto: UpdateProductDto): string;
     remove(id: string): Promise<string>;
